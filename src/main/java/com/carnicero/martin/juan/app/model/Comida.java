@@ -26,6 +26,8 @@ public class Comida {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_recomendacion_diaria")
+    private RecomendacionDiaria recomendacionDiaria;
 
 }
