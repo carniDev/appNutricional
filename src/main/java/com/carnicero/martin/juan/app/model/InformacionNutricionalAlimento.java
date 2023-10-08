@@ -27,6 +27,4 @@ public class InformacionNutricionalAlimento {
     @JoinColumn(name = "id_alimento")
     private Alimento alimento;
 
-
-
 }

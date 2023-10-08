@@ -23,5 +23,9 @@ public class Comida {
     private double grasaPorComida;
     @OneToMany(mappedBy = "comida", orphanRemoval = true)
     private List<Alimento> informacionNutricionalAlimentos;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
+
 
 }

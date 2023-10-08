@@ -2,6 +2,8 @@ package com.carnicero.martin.juan.app.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
@@ -14,5 +16,7 @@ public class Usuario {
     private String email;
     private String foto;
     private Rol rol;
+    @OneToMany(mappedBy = "usuario",orphanRemoval = true)
+    private List<Comida>comidas;
 
 }
