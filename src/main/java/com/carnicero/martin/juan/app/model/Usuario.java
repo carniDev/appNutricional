@@ -12,6 +12,7 @@ public class Usuario {
     private String nombre;
     private String password;
     private String email;
+    private String foto;
     private Rol rol;
 
 }

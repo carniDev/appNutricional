@@ -1,11 +1,15 @@
 package com.carnicero.martin.juan.app.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "recomendacion-diaria")
+@Getter
+@Setter
 public class RecomendacionDiaria {
 
     //Asignar en negativo, si al final del dia acaba en positivo el usuario se habra excedido
@@ -15,8 +19,14 @@ public class RecomendacionDiaria {
     private Long idRecomendacionDiaria;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Usuario usuario;
+    @Column(name = "kcal_diarias")
+    private double kcalDiarias;
+    @Column(name = "hidratos_carbono_diarios")
     private double hidratosCarbonoDiarios;
+    @Column(name = "proteina_diaria")
     private double proteinaDiaria;
+    @Column(name = "grasa_diaria")
+    private double grasaDiaria;
     private LocalDate fecha;
 
 }

@@ -14,6 +14,7 @@ import java.util.List;
 public class Comida {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_comida")
     private Long idComida;
     private TipoComida tipoComida;
     private LocalDateTime fechaComida;
@@ -21,6 +22,6 @@ public class Comida {
     private double proteinaPorComida;
     private double grasaPorComida;
     @OneToMany(mappedBy = "comida", orphanRemoval = true)
-    private List<List<Alimento>> alimentos;
+    private List<Alimento> informacionNutricionalAlimentos;
 
 }
