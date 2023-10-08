@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,6 +33,7 @@ public class RecomendacionDiaria {
     @OneToMany(mappedBy = "recomendacionDiaria",orphanRemoval = true)
     private List<Comida>comidasUsuario;
 
-
-
+    public RecomendacionDiaria() {
+        this.comidasUsuario = new ArrayList<>();
+    }
 }

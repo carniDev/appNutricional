@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,4 +31,8 @@ public class Comida {
     @JoinColumn(name = "id_recomendacion_diaria")
     private RecomendacionDiaria recomendacionDiaria;
 
+
+    public Comida() {
+        this.informacionNutricionalAlimentos = new ArrayList<>();
+    }
 }
