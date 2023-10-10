@@ -16,8 +16,10 @@ public class Comida {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_comida")
     private Long idComida;
+    @Enumerated(EnumType.STRING)
     private TipoComida tipoComida;
     private LocalDateTime fechaComida;
+    private double kcal;
     private double hidratosPorComida;
     private double proteinaPorComida;
     private double grasaPorComida;

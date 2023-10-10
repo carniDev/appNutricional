@@ -12,6 +12,10 @@ import java.time.LocalDate;
 @Setter
 public class RecomendacionDiaria {
 
+    //para probar
+
+    private static double KCAL_DIARIAS= 2000;
+
     //Asignar en negativo, si al final del dia acaba en positivo el usuario se habra excedido
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
