@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "recomendacion-diaria")
@@ -32,5 +34,10 @@ public class RecomendacionDiaria {
     @Column(name = "grasa_diaria")
     private double grasaDiaria;
     private LocalDate fecha;
+    @OneToMany(mappedBy = "recomendacionDiaria",orphanRemoval = true)
+    private List<Comida>comidasUsuario;
 
+    public RecomendacionDiaria() {
+        this.comidasUsuario = new ArrayList<>();
+    }
 }
