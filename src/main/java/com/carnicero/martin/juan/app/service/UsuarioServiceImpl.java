@@ -27,8 +27,13 @@ public final UsuarioRepository usuarioRepository;
     @Override
     public Usuario registrarUsuario(RegistrarUsuario usuario) {
         Usuario usuarioParaRegistrar = new Usuario(usuario);
-        usuarioParaRegistrar.setFechaRegistro(LocalDateTime.now());
-        return usuarioRepository.save(usuarioParaRegistrar);
+        if(!usuarioRepository.existsByEmail(usuarioParaRegistrar.getEmail())){
+            usuarioParaRegistrar.setFechaRegistro(LocalDateTime.now());
+            return usuarioRepository.save(usuarioParaRegistrar);
+        }
+
+        throw new RuntimeException("El email ya existe en la base de datos");
+
     }
 
     @Override
