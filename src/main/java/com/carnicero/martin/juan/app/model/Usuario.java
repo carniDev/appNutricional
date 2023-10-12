@@ -1,12 +1,15 @@
 package com.carnicero.martin.juan.app.model;
 
+import com.carnicero.martin.juan.app.request.RegistrarUsuario;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +17,7 @@ import java.util.List;
 @Table(name = "usuarios")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +25,7 @@ public class Usuario {
     private Long idUsuario;
     private String nombre;
     private String password;
+    @Column(unique = true)
     private String email;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private LocalDate fechaNacimiento;
@@ -29,5 +34,10 @@ public class Usuario {
     private Rol rol;
 
 
+    public Usuario(RegistrarUsuario usuario) {
+        this.nombre= usuario.getNombre();
+        this.email = usuario.getEmail();
+        this.fechaNacimiento= LocalDate.parse(usuario.getFechaNacimiento(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    }
 
 }
