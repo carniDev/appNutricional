@@ -2,16 +2,17 @@ package com.carnicero.martin.juan.app.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 @Entity
 @Table(name = "recomendacion-diaria")
 @Getter
 @Setter
+@NoArgsConstructor
 public class RecomendacionDiaria {
 
     //para probar
@@ -36,4 +37,12 @@ public class RecomendacionDiaria {
     private double grasaDiaria;
     private LocalDate fecha;
 
+    public RecomendacionDiaria(Usuario usuario) {
+        this.usuario = usuario;
+        this.fecha = LocalDate.now();
+        this.kcalDiarias= 0;
+        this.hidratosCarbonoDiarios= 0;
+        this.proteinaDiaria= 0;
+        this.grasaDiaria=0;
+    }
 }
