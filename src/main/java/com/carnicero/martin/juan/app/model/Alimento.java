@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "alimentos")
 @Getter
@@ -18,13 +20,7 @@ public class Alimento {
     private InformacionNutricionalAlimento informacion;
     @Column(name = "cantidad_alimento")
     private double cantidadAlimento;
-    @Column(name = "hidrato_carbono")
-    private double hidratosCarbono;
-    private double proteina;
-    private double grasa;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_comida")
-    private Comida comida;
-
+    @ManyToMany(mappedBy = "listadoAlimentos")
+    private List<Comida> comidas;
 
 }

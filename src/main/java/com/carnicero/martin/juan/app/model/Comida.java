@@ -20,12 +20,9 @@ public class Comida {
     @Enumerated(EnumType.STRING)
     private TipoComida tipoComida;
     private LocalDateTime fechaComida;
-    private double kcal;
-    private double hidratosPorComida;
-    private double proteinaPorComida;
-    private double grasaPorComida;
-    @OneToMany(mappedBy = "comida", orphanRemoval = true)
-    private List<Alimento> informacionNutricionalAlimentos;
+    @ManyToMany
+    @JoinTable(name = "comidas_alimentos",joinColumns = @JoinColumn(name = "id_comida"), inverseJoinColumns = @JoinColumn(name = "id_alimentos"))
+    private List<Alimento> listadoAlimentos;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
@@ -35,6 +32,6 @@ public class Comida {
 
 
     public Comida() {
-        this.informacionNutricionalAlimentos = new ArrayList<>();
+        this.listadoAlimentos = new ArrayList<>();
     }
 }
