@@ -21,10 +21,7 @@ public class Usuario {
     @Column(name = "fecha_registro")
     private LocalDateTime fechaRegistro;
     private Rol rol;
-    @OneToMany(mappedBy = "usuario",orphanRemoval = true)
-    private List<Comida>comidas;
 
-    public Usuario() {
-        this.comidas = new ArrayList<>();
-    }
+
+
 }

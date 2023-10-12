@@ -23,7 +23,8 @@ public class RecomendacionDiaria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_recomendacion_diaria")
     private Long idRecomendacionDiaria;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
     @Column(name = "kcal_diarias")
     private double kcalDiarias;
@@ -34,10 +35,5 @@ public class RecomendacionDiaria {
     @Column(name = "grasa_diaria")
     private double grasaDiaria;
     private LocalDate fecha;
-    @OneToMany(mappedBy = "recomendacionDiaria",orphanRemoval = true)
-    private List<Comida>comidasUsuario;
 
-    public RecomendacionDiaria() {
-        this.comidasUsuario = new ArrayList<>();
-    }
 }
