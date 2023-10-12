@@ -42,4 +42,15 @@ public final UsuarioRepository usuarioRepository;
             throw new RuntimeException("No se ha podido actualizar la informacion");
         }
     }
+
+    @Override
+    public void eliminarUsuario(String email) {
+        Usuario usuarioParaEliminar = usuarioRepository.findByEmail(email).orElseThrow(()->new RuntimeException("Usuario no encontrado"));
+        try{
+            usuarioRepository.delete(usuarioParaEliminar);
+        }catch (RuntimeException e){
+            throw new RuntimeException("No se ha podido eliminar correctamente al usuario");
+        }
+
+    }
 }

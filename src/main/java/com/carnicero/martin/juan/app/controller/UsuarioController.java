@@ -48,4 +48,15 @@ public class UsuarioController {
         }
 
     }
+
+    @DeleteMapping("/eliminar-usuario")
+    public ResponseEntity eliminarUsuario(@RequestParam String email){
+        try {
+            usuarioService.eliminarUsuario(email);
+            return ResponseEntity.ok("Usuario eliminado correctamente");
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
+    }
 }

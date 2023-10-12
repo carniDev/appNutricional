@@ -12,4 +12,6 @@ public interface UsuarioService {
     public Usuario registrarUsuario(RegistrarUsuario usuario);
 
     Usuario editarUsuario(String email,EditarUsuario usuario);
+
+    void eliminarUsuario(String email);
 }
