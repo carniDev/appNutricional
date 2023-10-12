@@ -19,6 +19,7 @@ public class Comida {
     private Long idComida;
     @Enumerated(EnumType.STRING)
     private TipoComida tipoComida;
+    @Column(name = "fecha_comida")
     private LocalDateTime fechaComida;
     @ManyToMany
     @JoinTable(name = "comidas_alimentos",joinColumns = @JoinColumn(name = "id_comida"), inverseJoinColumns = @JoinColumn(name = "id_alimentos"))
