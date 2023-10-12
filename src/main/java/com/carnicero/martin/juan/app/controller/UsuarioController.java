@@ -1,6 +1,7 @@
 package com.carnicero.martin.juan.app.controller;
 
 import com.carnicero.martin.juan.app.model.Usuario;
+import com.carnicero.martin.juan.app.request.EditarUsuario;
 import com.carnicero.martin.juan.app.request.RegistrarUsuario;
 import com.carnicero.martin.juan.app.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -35,10 +36,16 @@ public class UsuarioController {
         }catch (RuntimeException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+    }
 
-
-
-
+    @PutMapping("/editar-usuario")
+    public ResponseEntity editarUsuario(@RequestParam String email,@Valid @RequestBody EditarUsuario usuario){
+        try {
+            Usuario usuarioEditado = usuarioService.editarUsuario(email,usuario);
+            return ResponseEntity.ok("Usuario editado correctamente");
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
 
     }
 }
