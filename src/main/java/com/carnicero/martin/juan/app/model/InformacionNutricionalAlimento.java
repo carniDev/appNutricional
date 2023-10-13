@@ -14,11 +14,13 @@ public class InformacionNutricionalAlimento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_informacion_nutricional")
     private Long idInformacionNutricional;
+    @Column(name = "codigo_alimento",unique = true)
+    private String codigoAlimento;
     private String nombre;
-    private double kcal;
+    private int kcal;
     @Column(name = "hidratos_carbono")
-    private double hidratosCarbono;
-    private double proteinas;
-    private double grasas;
+    private int hidratosCarbono;
+    private int proteinas;
+    private int grasas;
 
 }
