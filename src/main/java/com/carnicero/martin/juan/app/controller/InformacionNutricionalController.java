@@ -45,4 +45,14 @@ private final InformacionNutricionalService informacionService;
         }
     }
 
+    @DeleteMapping("/eliminar")
+    public ResponseEntity eliminarInformacionAlimento(@RequestParam String codigo){
+        try{
+            informacionService.eliminarAlimento(codigo);
+            return ResponseEntity.ok("Alimento eliminado");
+        }catch (RuntimeException e){
+           return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha podido eliminar el alimento");
+        }
+    }
+
 }

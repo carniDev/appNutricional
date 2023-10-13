@@ -13,4 +13,5 @@ public interface InformacionNutricionalService {
     public InformacionNutricionalAlimento registrarAlimento(InformacionNutricional data);
     public InformacionNutricionalAlimento editarAlimento(String codigo,EditarInformacionNutricional data);
 
+    void eliminarAlimento(String codigo);
 }
