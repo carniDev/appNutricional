@@ -23,6 +23,11 @@ public class InformacionNutricionalServiceImpl implements  InformacionNutriciona
     }
 
     @Override
+    public InformacionNutricionalAlimento obtenerInformacion(String codigoAlimento) {
+        return informacionRepository.findByCodigoAlimento(codigoAlimento).orElseThrow(()->new RuntimeException("No se ha podido encontrar la informacion"));
+    }
+
+    @Override
     public List<InformacionNutricionalAlimento> obtenerInformacion() {
         return informacionRepository.findAll();
     }
@@ -40,14 +45,14 @@ public class InformacionNutricionalServiceImpl implements  InformacionNutriciona
 
     @Override
     public InformacionNutricionalAlimento editarAlimento(String codigo,EditarInformacionNutricional data) {
-        InformacionNutricionalAlimento alimentoParaEditar = informacionRepository.findByCodigoAlimento(codigo).orElseThrow(()->new RuntimeException("No se ha encontrado ningun alimento con ese codigo"));
+        InformacionNutricionalAlimento alimentoParaEditar = obtenerInformacion(codigo);
         InformacionNutricionalConverter.editarInfomacionNutricionalToEntity(alimentoParaEditar,data);
         return informacionRepository.save(alimentoParaEditar);
     }
 
     @Override
     public void eliminarAlimento(String codigo) {
-        InformacionNutricionalAlimento alimentoParaEliminar = informacionRepository.findByCodigoAlimento(codigo).orElseThrow(()->new RuntimeException("No se ha encontrado ningun alimento con ese codigo"));
+        InformacionNutricionalAlimento alimentoParaEliminar = obtenerInformacion(codigo);
         informacionRepository.delete(alimentoParaEliminar);
     }
 }

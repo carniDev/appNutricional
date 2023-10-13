@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface InformacionNutricionalService {
 
-
+    public InformacionNutricionalAlimento obtenerInformacion(String codigoAlimento);
     public List<InformacionNutricionalAlimento>obtenerInformacion();
     public InformacionNutricionalAlimento registrarAlimento(InformacionNutricional data);
     public InformacionNutricionalAlimento editarAlimento(String codigo,EditarInformacionNutricional data);

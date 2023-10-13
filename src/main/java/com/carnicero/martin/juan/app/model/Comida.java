@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +20,9 @@ public class Comida {
     @Enumerated(EnumType.STRING)
     private TipoComida tipoComida;
     @Column(name = "fecha_comida")
-    private LocalDateTime fechaComida;
+    private LocalDate fechaComida;
     @ManyToMany
-    @JoinTable(name = "comidas_alimentos",joinColumns = @JoinColumn(name = "id_comida"), inverseJoinColumns = @JoinColumn(name = "id_alimentos"))
+    @JoinTable(name = "comidas_alimentos", joinColumns = @JoinColumn(name = "id_comida"), inverseJoinColumns = @JoinColumn(name = "id_alimentos"))
     private List<Alimento> listadoAlimentos;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario")
