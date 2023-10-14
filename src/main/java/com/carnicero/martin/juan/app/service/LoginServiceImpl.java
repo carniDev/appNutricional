@@ -22,7 +22,7 @@ public class LoginServiceImpl implements LoginService{
     @Override
     public LocalDateTime ultimaVezLogueadoUsuario(String email) {
 
-        Usuario informacionUsuario = usuarioService.obtenerInformacionUsuario(email).orElseThrow(()-> new RuntimeException("No se ha encontrado ningun usuario"));
+        Usuario informacionUsuario = usuarioService.obtenerInformacionUsuario(email);
         RegistroLoginUsuario datosRegistro =loginUserRepository.findByUsuario(informacionUsuario).orElse(new RegistroLoginUsuario());
         if(datosRegistro.getUsuario()==null){
             primeraVezLogueado(informacionUsuario,datosRegistro);

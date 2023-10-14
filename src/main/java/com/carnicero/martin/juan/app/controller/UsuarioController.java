@@ -21,7 +21,7 @@ public class UsuarioController {
     @GetMapping("/informacion-usuario")
     public ResponseEntity informacionUsuario(@RequestParam String email){
         try {
-            Usuario usuarioObtenido = usuarioService.obtenerInformacionUsuario(email).orElseThrow(() -> new RuntimeException("No se ha encontrado ningun usuario"));
+            Usuario usuarioObtenido = usuarioService.obtenerInformacionUsuario(email);
             return ResponseEntity.ok(usuarioObtenido);
         }catch (RuntimeException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

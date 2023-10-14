@@ -2,6 +2,7 @@ package com.carnicero.martin.juan.app.util.converter;
 
 import com.carnicero.martin.juan.app.model.Alimento;
 import com.carnicero.martin.juan.app.model.InformacionNutricionalAlimento;
+import com.carnicero.martin.juan.app.request.EditarAlimento;
 import com.carnicero.martin.juan.app.request.RegistrarAlimento;
 
 public class AlimentoConverter {
@@ -12,5 +13,16 @@ public class AlimentoConverter {
         alimento.setCantidadAlimento(data.getCantidad());
         alimento.setInformacion(informacionData);
         return alimento;
+    }
+
+    public static Alimento registrarAlimentoToEntityComida(int cantidad, InformacionNutricionalAlimento informacionData) {
+        Alimento alimento = new Alimento();
+        alimento.setCantidadAlimento(cantidad);
+        alimento.setInformacion(informacionData);
+        return alimento;
+    }
+    public static void editarAlimentoToEntity(EditarAlimento data, Alimento alimento) {
+        alimento.setCantidadAlimento(data.getCantidad());
+
     }
 }

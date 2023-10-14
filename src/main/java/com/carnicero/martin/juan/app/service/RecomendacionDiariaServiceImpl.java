@@ -23,7 +23,7 @@ public class RecomendacionDiariaServiceImpl implements RecomendacionDiariaServic
     @Override
     public RecomendacionDiaria obtenerInformacion(String fechaDia,String email) {
 
-        Usuario usuario = usuarioService.obtenerInformacionUsuario(email).orElseThrow(()-> new RuntimeException("No se ha encontrado ningun usuario con ese nombre"));
+        Usuario usuario = usuarioService.obtenerInformacionUsuario(email);
         Optional<RecomendacionDiaria> recomendacion = recomendacionRepository.findByFechaAndUsuario(stringToLocalDateConverter(fechaDia),usuario);
         return recomendacion.orElseGet(() -> { return crearRecomendacionDiaria(usuario);
 
@@ -36,7 +36,7 @@ public class RecomendacionDiariaServiceImpl implements RecomendacionDiariaServic
     }
 
     public RecomendacionDiaria crearRecomendacionDiaria(String email) {
-        Usuario usuario = usuarioService.obtenerInformacionUsuario(email).orElseThrow(()-> new RuntimeException("No se ha encontrado ningun usuario con ese nombre"));
+        Usuario usuario = usuarioService.obtenerInformacionUsuario(email);
         return recomendacionRepository.save(new RecomendacionDiaria(usuario));
     }
 }

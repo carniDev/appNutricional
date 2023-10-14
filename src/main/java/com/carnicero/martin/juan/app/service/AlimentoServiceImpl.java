@@ -3,6 +3,7 @@ package com.carnicero.martin.juan.app.service;
 import com.carnicero.martin.juan.app.model.Alimento;
 import com.carnicero.martin.juan.app.model.InformacionNutricionalAlimento;
 import com.carnicero.martin.juan.app.repository.AlimentoRepository;
+import com.carnicero.martin.juan.app.request.EditarAlimento;
 import com.carnicero.martin.juan.app.request.RegistrarAlimento;
 import com.carnicero.martin.juan.app.util.converter.AlimentoConverter;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,9 @@ public class AlimentoServiceImpl implements AlimentoService {
         InformacionNutricionalAlimento informacion = informacionService.obtenerInformacion(data.getCodigoAlimento());
         Alimento alimentoParaRegistrar = AlimentoConverter.registrarAlimentoToEntity(data, informacion);
         return alimentoRepository.save(alimentoParaRegistrar);
+    }
+
+    public Alimento editarAlimento(EditarAlimento data) {
+       return null;
     }
 }

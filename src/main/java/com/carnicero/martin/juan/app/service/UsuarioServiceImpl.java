@@ -19,9 +19,8 @@ public final UsuarioRepository usuarioRepository;
         this.usuarioRepository = usuarioRepository;
     }
 
-    @Override
-    public Optional<Usuario> obtenerInformacionUsuario(String email) {
-        return usuarioRepository.findByEmail(email);
+    public Usuario obtenerInformacionUsuario(String email) {
+        return usuarioRepository.findByEmail(email).orElseThrow(()->new RuntimeException("No se ha encontrado el usuario"));
     }
 
     @Override
