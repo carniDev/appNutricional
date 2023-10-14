@@ -1,22 +1,19 @@
 package com.carnicero.martin.juan.app.service;
 
-import com.carnicero.martin.juan.app.model.Alimento;
-import com.carnicero.martin.juan.app.model.Comida;
-import com.carnicero.martin.juan.app.model.InformacionNutricionalAlimento;
-import com.carnicero.martin.juan.app.model.Usuario;
+import com.carnicero.martin.juan.app.model.*;
 import com.carnicero.martin.juan.app.repository.ComidaRepository;
+import com.carnicero.martin.juan.app.request.EditarUnaComida;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
 import com.carnicero.martin.juan.app.util.converter.AlimentoConverter;
-import com.carnicero.martin.juan.app.util.converter.LocalDateConverter;
+import com.carnicero.martin.juan.app.util.converter.ComidaConverter;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static com.carnicero.martin.juan.app.util.converter.LocalDateConverter.*;
 
 @Service
-public class ComidaServiceImpl implements ComidaService{
+public class ComidaServiceImpl implements ComidaService {
 
     private final ComidaRepository comidaRepository;
     private final InformacionNutricionalService informacionService;
@@ -29,20 +26,27 @@ public class ComidaServiceImpl implements ComidaService{
     }
 
     @Override
-    public List<?> listarComidasUsuarioFecha(String email, String fecha) {
-        return comidaRepository.findAllByFechaComidaAndUsuarioEmail(stringToLocalDateConverter(fecha),email);
+    public List<Comida> listarComidasUsuarioFecha(String email, String fecha) {
+        return comidaRepository.findAllByFechaComidaAndUsuarioEmail(stringToLocalDateConverter(fecha), email);
+    }
+    public Comida listarComidaUsuarioFecha(String email, String fecha, TipoComida tipoComida) {
+        return comidaRepository.findByFechaComidaAndUsuarioEmailAndTipoComida(stringToLocalDateConverter(fecha), email,tipoComida).orElseThrow(()->new RuntimeException("No se ha encontrado la comida"));
     }
 
     @Override
     public Comida registrarComida(RegistrarComida data) {
         InformacionNutricionalAlimento informacion = informacionService.obtenerInformacion(data.getCodigoAlimento());
-        Alimento alimentoARegistrar = AlimentoConverter.registrarAlimentoToEntityComida(data.getCantidadComida(),informacion);
+        Alimento alimentoARegistrar = AlimentoConverter.registrarAlimentoToEntityComida(data.getCantidadComida(), informacion);
         Usuario usuario = usuarioService.obtenerInformacionUsuario(data.getEmail());
-        Comida comidaParaRegistrar = new Comida();
-        comidaParaRegistrar.setFechaComida(LocalDate.now());
-        comidaParaRegistrar.setTipoComida(data.getTipoComida());
-        comidaParaRegistrar.setUsuario(usuario);
-        comidaParaRegistrar.getListadoAlimentos().add(alimentoARegistrar);
+        Comida comidaParaRegistrar = ComidaConverter.registrarComidaToEntity(data, alimentoARegistrar, usuario);
         return comidaRepository.save(comidaParaRegistrar);
+    }
+
+    @Override
+    public Comida editarComida(EditarUnaComida data) {
+        Comida comidaUsuario = listarComidaUsuarioFecha(data.getEmail(), data.getFecha(),data.getTipoComida());
+        List<Alimento>alimentosComida = data.getAlimentos();
+        comidaUsuario.setListadoAlimentos(alimentosComida);
+        return comidaRepository.save(comidaUsuario);
     }
 }

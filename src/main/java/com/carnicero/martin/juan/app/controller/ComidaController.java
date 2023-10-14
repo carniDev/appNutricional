@@ -1,6 +1,7 @@
 package com.carnicero.martin.juan.app.controller;
 
 import com.carnicero.martin.juan.app.model.Comida;
+import com.carnicero.martin.juan.app.request.EditarUnaComida;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
 import com.carnicero.martin.juan.app.service.ComidaService;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,16 @@ public class ComidaController {
         try {
             Comida comidaRegistrada = comidaService.registrarComida(data);
             return ResponseEntity.ok(comidaRegistrada);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha registrado correctamente la comida");
+        }
+    }
+
+    @PutMapping("editar")
+    public ResponseEntity editarComida(@RequestBody EditarUnaComida data) {
+        try {
+            Comida comidaEditada = comidaService.editarComida(data);
+            return ResponseEntity.ok(comidaEditada);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha registrado correctamente la comida");
         }
