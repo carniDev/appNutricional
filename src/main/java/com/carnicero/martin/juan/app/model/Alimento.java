@@ -1,9 +1,11 @@
 package com.carnicero.martin.juan.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,7 +22,11 @@ public class Alimento {
     private InformacionNutricionalAlimento informacion;
     @Column(name = "cantidad_alimento")
     private double cantidadAlimento;
-    @ManyToMany(mappedBy = "listadoAlimentos")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "listadoAlimentos", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Comida> comidas;
 
+    public Alimento() {
+        this.comidas = new ArrayList<>();
+    }
 }

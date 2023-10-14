@@ -9,6 +9,7 @@ import java.util.List;
 public interface ComidaService {
     List<?> listarComidasUsuarioFecha(String email, String fecha);
 
+
     Comida registrarComida(RegistrarComida data);
 
     Comida editarComida(EditarUnaComida data);

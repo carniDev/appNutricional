@@ -29,7 +29,7 @@ public class ComidaServiceImpl implements ComidaService {
     public List<Comida> listarComidasUsuarioFecha(String email, String fecha) {
         return comidaRepository.findAllByFechaComidaAndUsuarioEmail(stringToLocalDateConverter(fecha), email);
     }
-    public Comida listarComidaUsuarioFecha(String email, String fecha, TipoComida tipoComida) {
+    public Comida listarUnaComidaUsuarioFecha(String email, String fecha, TipoComida tipoComida) {
         return comidaRepository.findByFechaComidaAndUsuarioEmailAndTipoComida(stringToLocalDateConverter(fecha), email,tipoComida).orElseThrow(()->new RuntimeException("No se ha encontrado la comida"));
     }
 
@@ -44,7 +44,7 @@ public class ComidaServiceImpl implements ComidaService {
 
     @Override
     public Comida editarComida(EditarUnaComida data) {
-        Comida comidaUsuario = listarComidaUsuarioFecha(data.getEmail(), data.getFecha(),data.getTipoComida());
+        Comida comidaUsuario = listarUnaComidaUsuarioFecha(data.getEmail(), data.getFecha(),data.getTipoComida());
         List<Alimento>alimentosComida = data.getAlimentos();
         comidaUsuario.setListadoAlimentos(alimentosComida);
         return comidaRepository.save(comidaUsuario);

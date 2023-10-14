@@ -1,6 +1,7 @@
 package com.carnicero.martin.juan.app.controller;
 
 import com.carnicero.martin.juan.app.model.Comida;
+import com.carnicero.martin.juan.app.model.TipoComida;
 import com.carnicero.martin.juan.app.request.EditarUnaComida;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
 import com.carnicero.martin.juan.app.service.ComidaService;
@@ -19,6 +20,12 @@ public class ComidaController {
     public ComidaController(ComidaService comidaService) {
         this.comidaService = comidaService;
     }
+
+    @GetMapping("listar-una-comida")
+    public ResponseEntity listarUnaComidaUsuarioDia(@RequestParam String fecha, @RequestParam String email, @RequestParam TipoComida tipoComida){
+        Comida comida = comidaService.
+    }
+
 
     @GetMapping("listar-comidas/")
     public ResponseEntity listarComidasUsuarioDia(@RequestParam String fecha, @RequestParam String email) {
