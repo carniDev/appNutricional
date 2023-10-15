@@ -1,6 +1,8 @@
 package com.carnicero.martin.juan.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,11 +19,13 @@ public class Alimento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_alimento")
     private Long idAlimento;
-    @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_informacion_nutricional")
     private InformacionNutricionalAlimento informacion;
     @Column(name = "cantidad_alimento")
     private double cantidadAlimento;
+    @JsonManagedReference
     @JsonIgnore
     @ManyToMany(mappedBy = "listadoAlimentos", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Comida> comidas;
