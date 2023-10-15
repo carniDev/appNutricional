@@ -62,7 +62,7 @@ public class ComidaController {
             Comida comidaRegistrada = comidaService.registrarComida(data);
             return ResponseEntity.ok(comidaRegistrada);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha registrado correctamente la comida");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
@@ -72,7 +72,7 @@ public class ComidaController {
             Comida comidaEditada = comidaService.editarComida(data);
             return ResponseEntity.ok(comidaEditada);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha registrado correctamente la comida");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 

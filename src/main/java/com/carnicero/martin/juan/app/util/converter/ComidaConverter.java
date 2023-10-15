@@ -11,7 +11,7 @@ public class ComidaConverter {
 
     public static Comida registrarComidaToEntity(RegistrarComida data, Alimento alimento, Usuario usuario){
         Comida comidaParaRegistrar = new Comida();
-        comidaParaRegistrar.setFechaComida(LocalDate.now());
+        comidaParaRegistrar.setFechaComida(data.getFecha());
         comidaParaRegistrar.setTipoComida(data.getTipoComida());
         comidaParaRegistrar.setUsuario(usuario);
         comidaParaRegistrar.getListadoAlimentos().add(alimento);
