@@ -1,9 +1,8 @@
 package com.carnicero.martin.juan.app.controller;
 
-import com.carnicero.martin.juan.app.model.InformacionNutricionalAlimento;
 import com.carnicero.martin.juan.app.request.EditarInformacionNutricional;
 import com.carnicero.martin.juan.app.request.InformacionNutricional;
-import com.carnicero.martin.juan.app.service.InformacionNutricionalService;
+import com.carnicero.martin.juan.app.service.interfaces.InformacionNutricionalService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,15 +1,16 @@
-package com.carnicero.martin.juan.app.service;
+package com.carnicero.martin.juan.app.service.impl;
 
 import com.carnicero.martin.juan.app.model.RegistroLoginUsuario;
 import com.carnicero.martin.juan.app.model.Usuario;
 import com.carnicero.martin.juan.app.repository.RegistroLoginUsuarioRepository;
+import com.carnicero.martin.juan.app.service.interfaces.LoginService;
+import com.carnicero.martin.juan.app.service.interfaces.UsuarioService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
-public class LoginServiceImpl implements LoginService{
+public class LoginServiceImpl implements LoginService {
 
     private final RegistroLoginUsuarioRepository loginUserRepository;
     private final UsuarioService usuarioService;

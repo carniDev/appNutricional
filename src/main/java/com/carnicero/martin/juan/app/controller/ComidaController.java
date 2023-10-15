@@ -5,7 +5,7 @@ import com.carnicero.martin.juan.app.model.TipoComida;
 import com.carnicero.martin.juan.app.request.EditarUnaComida;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
 import com.carnicero.martin.juan.app.response.InformacionComida;
-import com.carnicero.martin.juan.app.service.ComidaService;
+import com.carnicero.martin.juan.app.service.interfaces.ComidaService;
 import com.carnicero.martin.juan.app.util.converter.InformacionComidaConverter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

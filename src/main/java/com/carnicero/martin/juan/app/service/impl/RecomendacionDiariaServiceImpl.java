@@ -1,8 +1,10 @@
-package com.carnicero.martin.juan.app.service;
+package com.carnicero.martin.juan.app.service.impl;
 
 import com.carnicero.martin.juan.app.model.RecomendacionDiaria;
 import com.carnicero.martin.juan.app.model.Usuario;
 import com.carnicero.martin.juan.app.repository.RecomendacionDiariaRepository;
+import com.carnicero.martin.juan.app.service.interfaces.RecomendacionDiariaService;
+import com.carnicero.martin.juan.app.service.interfaces.UsuarioService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

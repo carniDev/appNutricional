@@ -1,6 +1,6 @@
 package com.carnicero.martin.juan.app.controller;
 
-import com.carnicero.martin.juan.app.service.RecomendacionDiariaService;
+import com.carnicero.martin.juan.app.service.interfaces.RecomendacionDiariaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

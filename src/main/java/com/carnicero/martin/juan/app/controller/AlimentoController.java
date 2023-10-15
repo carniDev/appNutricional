@@ -2,7 +2,7 @@ package com.carnicero.martin.juan.app.controller;
 
 import com.carnicero.martin.juan.app.model.Alimento;
 import com.carnicero.martin.juan.app.request.RegistrarAlimento;
-import com.carnicero.martin.juan.app.service.AlimentoService;
+import com.carnicero.martin.juan.app.service.interfaces.AlimentoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-package com.carnicero.martin.juan.app.service;
+package com.carnicero.martin.juan.app.service.interfaces;
 
 import com.carnicero.martin.juan.app.model.InformacionNutricionalAlimento;
 import com.carnicero.martin.juan.app.request.EditarInformacionNutricional;

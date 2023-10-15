@@ -3,7 +3,7 @@ package com.carnicero.martin.juan.app.controller;
 import com.carnicero.martin.juan.app.model.Usuario;
 import com.carnicero.martin.juan.app.request.EditarUsuario;
 import com.carnicero.martin.juan.app.request.RegistrarUsuario;
-import com.carnicero.martin.juan.app.service.UsuarioService;
+import com.carnicero.martin.juan.app.service.interfaces.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

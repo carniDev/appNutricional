@@ -1,10 +1,12 @@
-package com.carnicero.martin.juan.app.service;
+package com.carnicero.martin.juan.app.service.impl;
 
 import com.carnicero.martin.juan.app.model.Alimento;
 import com.carnicero.martin.juan.app.model.InformacionNutricionalAlimento;
 import com.carnicero.martin.juan.app.repository.AlimentoRepository;
 import com.carnicero.martin.juan.app.request.EditarAlimento;
 import com.carnicero.martin.juan.app.request.RegistrarAlimento;
+import com.carnicero.martin.juan.app.service.interfaces.AlimentoService;
+import com.carnicero.martin.juan.app.service.interfaces.InformacionNutricionalService;
 import com.carnicero.martin.juan.app.util.converter.AlimentoConverter;
 import org.springframework.stereotype.Service;
 

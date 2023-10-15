@@ -1,11 +1,11 @@
-package com.carnicero.martin.juan.app.service;
+package com.carnicero.martin.juan.app.service.impl;
 
 import com.carnicero.martin.juan.app.model.InformacionNutricionalAlimento;
 import com.carnicero.martin.juan.app.repository.InformacionNutricionalRepository;
 import com.carnicero.martin.juan.app.request.EditarInformacionNutricional;
 import com.carnicero.martin.juan.app.request.InformacionNutricional;
+import com.carnicero.martin.juan.app.service.interfaces.InformacionNutricionalService;
 import com.carnicero.martin.juan.app.util.converter.InformacionNutricionalConverter;
-import com.carnicero.martin.juan.app.util.generador.GeneradorCodigo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import static com.carnicero.martin.juan.app.util.converter.InformacionNutriciona
 import static com.carnicero.martin.juan.app.util.generador.GeneradorCodigo.*;
 
 @Service
-public class InformacionNutricionalServiceImpl implements  InformacionNutricionalService{
+public class InformacionNutricionalServiceImpl implements InformacionNutricionalService {
 
     private final InformacionNutricionalRepository informacionRepository;
 

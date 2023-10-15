@@ -1,4 +1,4 @@
-package com.carnicero.martin.juan.app.service;
+package com.carnicero.martin.juan.app.service.interfaces;
 
 import java.time.LocalDateTime;
 
