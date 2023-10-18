@@ -21,8 +21,13 @@ public class AlimentoConverter {
         alimento.setInformacion(informacionData);
         return alimento;
     }
-    public static void editarAlimentoToEntity(EditarAlimento data, Alimento alimento) {
+    public static void editarAlimentoToEntity(EditarAlimento data, Alimento alimento,InformacionNutricionalAlimento informacion) {
         alimento.setCantidadAlimento(data.getCantidad());
+        alimento.setInformacion(informacion);
+    }
 
+    public static void alimentoEditadoToEntity(Alimento original, Alimento editado){
+        original.setCantidadAlimento(editado.getCantidadAlimento());
+        original.setInformacion(editado.getInformacion());
     }
 }

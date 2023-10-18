@@ -21,6 +21,11 @@ public class AlimentoServiceImpl implements AlimentoService {
     }
 
     @Override
+    public Alimento buscarAlimento(Long id) {
+        return alimentoRepository.findById(id).orElseThrow(()->new RuntimeException("No se ha encontrado el alimento"));
+    }
+
+    @Override
     public Alimento registrarAlimento(RegistrarAlimento data) {
         InformacionNutricionalAlimento informacion = informacionService.obtenerInformacion(data.getCodigoAlimento());
         Alimento alimentoParaRegistrar = AlimentoConverter.registrarAlimentoToEntity(data, informacion);
@@ -28,6 +33,16 @@ public class AlimentoServiceImpl implements AlimentoService {
     }
 
     public Alimento editarAlimento(EditarAlimento data) {
-       return null;
+       Alimento alimento = buscarAlimento(data.getIdAlimento());
+        InformacionNutricionalAlimento informacion = informacionService.obtenerInformacion(data.getCodigoAlimento());
+        AlimentoConverter.editarAlimentoToEntity(data,alimento,informacion);
+        return alimento;
+    }
+
+
+    public Alimento editarAlimento(Alimento original,Alimento data) {
+        Alimento alimento = buscarAlimento(original.getIdAlimento());
+        AlimentoConverter.alimentoEditadoToEntity(alimento,data);
+        return alimento;
     }
 }

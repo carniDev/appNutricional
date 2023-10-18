@@ -4,12 +4,15 @@ import com.carnicero.martin.juan.app.model.*;
 import com.carnicero.martin.juan.app.repository.ComidaRepository;
 import com.carnicero.martin.juan.app.request.EditarUnaComida;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
+import com.carnicero.martin.juan.app.service.interfaces.AlimentoService;
 import com.carnicero.martin.juan.app.service.interfaces.ComidaService;
 import com.carnicero.martin.juan.app.service.interfaces.InformacionNutricionalService;
 import com.carnicero.martin.juan.app.service.interfaces.UsuarioService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.carnicero.martin.juan.app.util.converter.AlimentoConverter.*;
 import static com.carnicero.martin.juan.app.util.converter.ComidaConverter.*;
@@ -21,11 +24,13 @@ public class ComidaServiceImpl implements ComidaService {
     private final ComidaRepository comidaRepository;
     private final InformacionNutricionalService informacionService;
     private final UsuarioService usuarioService;
+    private final AlimentoService alimentoService;
 
-    public ComidaServiceImpl(ComidaRepository comidaRepository, InformacionNutricionalService informacionService, UsuarioService usuarioService) {
+    public ComidaServiceImpl(ComidaRepository comidaRepository, InformacionNutricionalService informacionService, UsuarioService usuarioService, AlimentoService alimentoService) {
         this.comidaRepository = comidaRepository;
         this.informacionService = informacionService;
         this.usuarioService = usuarioService;
+        this.alimentoService = alimentoService;
     }
 
     @Override
@@ -52,8 +57,17 @@ public class ComidaServiceImpl implements ComidaService {
     @Override
     public Comida editarComida(EditarUnaComida data) {
         Comida comidaUsuario = listarUnaComidaUsuarioFecha(data.getEmail(), data.getFecha(), data.getTipoComida());
-        List<Alimento> alimentosComida = data.getAlimentos();
-        comidaUsuario.setListadoAlimentos(alimentosComida);
+        data.getAlimentos().stream().map(alimentoEditado -> {
+
+            List<Alimento> alimentos = new ArrayList<>();
+            for (Alimento alimentoOriginal : comidaUsuario.getListadoAlimentos()) {
+                alimentos.add(alimentoService.editarAlimento(alimentoOriginal, alimentoEditado));
+            }
+
+            return alimentos;
+
+        }).collect(Collectors.toList());
+
         return comidaRepository.save(comidaUsuario);
     }
 }
