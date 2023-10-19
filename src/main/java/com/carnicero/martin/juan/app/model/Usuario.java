@@ -32,6 +32,8 @@ public class Usuario {
     @Column(name = "fecha_registro",updatable = false,nullable = false)
     private LocalDateTime fechaRegistro;
     private Rol rol;
+    @Column(name = "inicio_sesion")
+    private LocalDateTime inicioSesion;
 
 
     public Usuario(RegistrarUsuario usuario) {

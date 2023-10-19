@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/app-nutricional")
 public class UsuarioController {
@@ -26,6 +28,12 @@ public class UsuarioController {
         }catch (RuntimeException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/ultimo-loging")
+    public LocalDateTime ultimaVezLogueado(@RequestParam String email) {
+
+        return usuarioService.ultimaVezLogueadoUsuario(email);
     }
 
     @PostMapping("/registrar-usuario")

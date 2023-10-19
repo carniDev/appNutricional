@@ -57,4 +57,19 @@ public final UsuarioRepository usuarioRepository;
         }
 
     }
+
+    public LocalDateTime ultimaVezLogueadoUsuario(String email) {
+        Usuario informacionUsuario = obtenerInformacionUsuario(email);
+        if(informacionUsuario.getInicioSesion()==null){
+            primeraVezLogueado(informacionUsuario);
+        }
+        return informacionUsuario.getInicioSesion();
+    }
+
+
+    private void primeraVezLogueado(Usuario usuario){
+
+        usuario.setInicioSesion(LocalDateTime.now());
+        usuarioRepository.save(usuario);
+    }
 }

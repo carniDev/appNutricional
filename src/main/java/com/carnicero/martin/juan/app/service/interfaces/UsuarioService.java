@@ -4,12 +4,14 @@ import com.carnicero.martin.juan.app.model.Usuario;
 import com.carnicero.martin.juan.app.request.EditarUsuario;
 import com.carnicero.martin.juan.app.request.RegistrarUsuario;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface UsuarioService {
-    public Usuario obtenerInformacionUsuario(String email);
+    Usuario obtenerInformacionUsuario(String email);
+    LocalDateTime ultimaVezLogueadoUsuario(String email);
 
-    public Usuario registrarUsuario(RegistrarUsuario usuario);
+    Usuario registrarUsuario(RegistrarUsuario usuario);
 
     Usuario editarUsuario(String email,EditarUsuario usuario);
 
