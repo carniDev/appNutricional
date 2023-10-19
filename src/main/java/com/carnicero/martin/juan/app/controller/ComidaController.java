@@ -29,7 +29,6 @@ public class ComidaController {
     @GetMapping("/listar-una-comida")
     public ResponseEntity listarUnaComidaUsuarioDia(@RequestParam String fecha, @RequestParam String email, @RequestParam TipoComida tipoComida) {
         try {
-
             InformacionComida informacionComida = comidaToInformacion(comidaService.listarUnaComidaUsuarioFecha(email, fecha, tipoComida));
             return ResponseEntity.ok(informacionComida);
         } catch (RuntimeException e) {
@@ -66,6 +65,16 @@ public class ComidaController {
             return ResponseEntity.ok(comidaEditada);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("eliminar")
+    public ResponseEntity eliminarComida(@RequestParam final Long id) {
+        try {
+            comidaService.eliminarComida(id);
+            return ResponseEntity.ok("Comida eliminada correctamente");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha podido eliminar la comida");
         }
     }
 

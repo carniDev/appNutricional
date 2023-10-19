@@ -70,4 +70,10 @@ public class ComidaServiceImpl implements ComidaService {
 
         return comidaRepository.save(comidaUsuario);
     }
+
+    @Override
+    public void eliminarComida(Long id) {
+        Comida comidaParaEliminar = comidaRepository.findById(id).orElseThrow(()->new RuntimeException("No se ha encontrado la comida"));
+        comidaRepository.delete(comidaParaEliminar);
+    }
 }

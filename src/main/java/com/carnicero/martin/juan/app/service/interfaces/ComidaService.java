@@ -15,4 +15,6 @@ public interface ComidaService {
     Comida registrarComida(RegistrarComida data);
 
     Comida editarComida(EditarUnaComida data);
+
+    void eliminarComida(Long id);
 }
