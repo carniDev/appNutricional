@@ -6,6 +6,7 @@ import com.carnicero.martin.juan.app.repository.RecomendacionDiariaRepository;
 import com.carnicero.martin.juan.app.request.EditarUnaComida;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
 import com.carnicero.martin.juan.app.service.interfaces.*;
+import com.carnicero.martin.juan.app.util.converter.LocalDateConverter;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -70,8 +71,8 @@ public class ComidaServiceImpl implements ComidaService {
     }
 
     @Override
-    public void eliminarComida(Long id) {
-        Comida comidaParaEliminar = comidaRepository.findById(id).orElseThrow(()->new RuntimeException("No se ha encontrado la comida"));
-        comidaRepository.delete(comidaParaEliminar);
+    public void eliminarComida(String fechaDia,String email,TipoComida tipoComida) {
+        Comida comidaParaEliminar = comidaRepository.findByFechaComidaAndUsuarioEmailAndTipoComida(LocalDateConverter.stringToLocalDateConverter(fechaDia),email,tipoComida).orElseThrow(()->new RuntimeException("No se ha encontrado la comida"));
+        comidaRepository.deleteById(comidaParaEliminar.getIdComida());
     }
 }

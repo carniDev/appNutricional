@@ -16,4 +16,5 @@ public interface ComidaRepository extends JpaRepository<Comida,Long> {
 
     Optional<Comida> findByFechaComidaAndUsuarioEmailAndTipoComida(LocalDate fecha, String email, TipoComida tipoComida);
     Boolean existsByFechaComidaAndUsuarioEmailAndTipoComida(LocalDate fecha, String email, TipoComida tipoComida);
+
 }

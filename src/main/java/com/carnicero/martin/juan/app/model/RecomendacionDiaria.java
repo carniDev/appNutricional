@@ -24,7 +24,7 @@ public class RecomendacionDiaria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_recomendacion_diaria")
     private Long idRecomendacionDiaria;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE,CascadeType.DETACH})
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
     @Column(name = "kcal_diarias")

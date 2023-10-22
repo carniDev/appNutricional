@@ -76,9 +76,9 @@ public class ComidaController {
     }
 
     @DeleteMapping("eliminar")
-    public ResponseEntity eliminarComida(@RequestParam final Long id) {
+    public ResponseEntity eliminarComida(@RequestParam final String fechaDia, @RequestParam final String email,@RequestParam TipoComida tipoComida) {
         try {
-            comidaService.eliminarComida(id);
+            comidaService.eliminarComida(fechaDia, email, tipoComida);
             return ResponseEntity.ok("Comida eliminada correctamente");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha podido eliminar la comida");

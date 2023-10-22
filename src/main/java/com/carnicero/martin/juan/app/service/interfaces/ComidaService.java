@@ -16,5 +16,5 @@ public interface ComidaService {
 
     Comida editarComida(EditarUnaComida data);
 
-    void eliminarComida(Long id);
+    void eliminarComida(String fechaDia,String email,TipoComida tipoComida);
 }
