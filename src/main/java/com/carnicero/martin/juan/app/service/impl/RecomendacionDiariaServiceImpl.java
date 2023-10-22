@@ -46,13 +46,24 @@ public class RecomendacionDiariaServiceImpl implements RecomendacionDiariaServic
     }
 
     @Override
-    public RecomendacionDiaria actualizar(Comida comida) {
+    public RecomendacionDiaria actualizarPositivo(Comida comida) {
         RecomendacionDiaria recomendacionDiaria = obtenerInformacion(comida.getFechaComida(),comida.getUsuario().getEmail());
         MacroNutritientesComida nutriente = calcular(comida.getListadoAlimentos());
         recomendacionDiaria.setHidratosCarbonoDiarios(recomendacionDiaria.getHidratosCarbonoDiarios()+nutriente.getHidratosCarbono());
         recomendacionDiaria.setProteinaDiaria(recomendacionDiaria.getProteinaDiaria()+nutriente.getProteinas());
         recomendacionDiaria.setGrasaDiaria(recomendacionDiaria.getGrasaDiaria()+nutriente.getGrasas());
         recomendacionDiaria.setKcalDiarias(recomendacionDiaria.getKcalDiarias()+nutriente.getKcal());
+        return recomendacionRepository.save(recomendacionDiaria);
+    }
+
+    @Override
+    public RecomendacionDiaria actualizarNegativo(Comida comida) {
+        RecomendacionDiaria recomendacionDiaria = obtenerInformacion(comida.getFechaComida(),comida.getUsuario().getEmail());
+        MacroNutritientesComida nutriente = calcular(comida.getListadoAlimentos());
+        recomendacionDiaria.setHidratosCarbonoDiarios(recomendacionDiaria.getHidratosCarbonoDiarios()-nutriente.getHidratosCarbono());
+        recomendacionDiaria.setProteinaDiaria(recomendacionDiaria.getProteinaDiaria()-nutriente.getProteinas());
+        recomendacionDiaria.setGrasaDiaria(recomendacionDiaria.getGrasaDiaria()-nutriente.getGrasas());
+        recomendacionDiaria.setKcalDiarias(recomendacionDiaria.getKcalDiarias()-nutriente.getKcal());
         return recomendacionRepository.save(recomendacionDiaria);
     }
 

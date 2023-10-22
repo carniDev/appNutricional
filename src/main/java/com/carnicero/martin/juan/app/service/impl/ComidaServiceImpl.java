@@ -50,7 +50,7 @@ public class ComidaServiceImpl implements ComidaService {
             Alimento alimentoARegistrar = registrarAlimentoToEntityComida(data.getCantidadComida(), informacion);
             Usuario usuario = usuarioService.obtenerInformacionUsuario(data.getEmail());
             Comida comidaParaRegistrar = registrarComidaToEntity(data, alimentoARegistrar, usuario);
-            recomendacionService.actualizar(comidaParaRegistrar);
+            recomendacionService.actualizarPositivo(comidaParaRegistrar);
             return comidaRepository.save(comidaParaRegistrar);
         }
         throw new RuntimeException("No puedes registrar el mismo tipo de comida");
@@ -74,5 +74,6 @@ public class ComidaServiceImpl implements ComidaService {
     public void eliminarComida(String fechaDia,String email,TipoComida tipoComida) {
         Comida comidaParaEliminar = comidaRepository.findByFechaComidaAndUsuarioEmailAndTipoComida(LocalDateConverter.stringToLocalDateConverter(fechaDia),email,tipoComida).orElseThrow(()->new RuntimeException("No se ha encontrado la comida"));
         comidaRepository.deleteById(comidaParaEliminar.getIdComida());
+        recomendacionService.actualizarNegativo(comidaParaEliminar);
     }
 }

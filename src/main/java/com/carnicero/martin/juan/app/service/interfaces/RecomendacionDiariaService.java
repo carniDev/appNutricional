@@ -10,7 +10,9 @@ import java.time.LocalDate;
 public interface RecomendacionDiariaService {
 
     public RecomendacionDiaria obtenerInformacion(String fechaDia, String email);
-    RecomendacionDiaria actualizar(Comida comida);
+    RecomendacionDiaria actualizarPositivo(Comida comida);
+    RecomendacionDiaria actualizarNegativo(Comida comida);
+
 
 
 }
