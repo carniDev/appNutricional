@@ -68,7 +68,6 @@ public final UsuarioRepository usuarioRepository;
 
 
     private void primeraVezLogueado(Usuario usuario){
-
         usuario.setInicioSesion(LocalDateTime.now());
         usuarioRepository.save(usuario);
     }
