@@ -1,17 +1,22 @@
 package com.carnicero.martin.juan.app.controller;
 
+import com.carnicero.martin.juan.app.model.Alimento;
 import com.carnicero.martin.juan.app.model.Comida;
+import com.carnicero.martin.juan.app.model.InformacionNutricionalAlimento;
 import com.carnicero.martin.juan.app.model.TipoComida;
 import com.carnicero.martin.juan.app.request.EditarUnaComida;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
 import com.carnicero.martin.juan.app.response.InformacionComida;
+import com.carnicero.martin.juan.app.response.MacroNutritientesComida;
 import com.carnicero.martin.juan.app.service.interfaces.ComidaService;
+import com.carnicero.martin.juan.app.service.interfaces.RecomendacionDiariaService;
 import com.carnicero.martin.juan.app.util.converter.InformacionComidaConverter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static com.carnicero.martin.juan.app.util.converter.InformacionComidaConverter.*;
@@ -21,9 +26,11 @@ import static com.carnicero.martin.juan.app.util.converter.InformacionComidaConv
 public class ComidaController {
 
     private final ComidaService comidaService;
+    private final RecomendacionDiariaService recomendacionDiariaService;
 
-    public ComidaController(ComidaService comidaService) {
+    public ComidaController(ComidaService comidaService, RecomendacionDiariaService recomendacionDiariaService) {
         this.comidaService = comidaService;
+        this.recomendacionDiariaService = recomendacionDiariaService;
     }
 
     @GetMapping("/listar-una-comida")
@@ -77,5 +84,7 @@ public class ComidaController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha podido eliminar la comida");
         }
     }
+
+
 
 }
