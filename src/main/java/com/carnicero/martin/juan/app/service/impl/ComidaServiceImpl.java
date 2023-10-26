@@ -6,6 +6,7 @@ import com.carnicero.martin.juan.app.repository.RecomendacionDiariaRepository;
 import com.carnicero.martin.juan.app.request.EditarUnaComida;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
 import com.carnicero.martin.juan.app.service.interfaces.*;
+import com.carnicero.martin.juan.app.util.Constantes.Constantes;
 import com.carnicero.martin.juan.app.util.converter.LocalDateConverter;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
 import static com.carnicero.martin.juan.app.util.converter.AlimentoConverter.*;
 import static com.carnicero.martin.juan.app.util.converter.ComidaConverter.*;
 import static com.carnicero.martin.juan.app.util.converter.LocalDateConverter.*;
@@ -54,27 +56,35 @@ public class ComidaServiceImpl implements ComidaService {
             recomendacionService.actualizarPositivo(comidaParaRegistrar);
             return comidaRepository.save(comidaParaRegistrar);
         }
-        throw new RuntimeException("No puedes registrar el mismo tipo de comida");
+        throw new RuntimeException(ERROR_REGISTRAR);
     }
 
     @Override
     public Comida editarComida(EditarUnaComida data) {
-        Comida comidaUsuario = listarUnaComidaUsuarioFecha(data.getEmail(), data.getFecha(), data.getTipoComida());
-        comidaUsuario.getListadoAlimentos().stream().filter(alimento ->
-            alimento.getCantidadAlimento()!=data.getAlimento().getCantidadAlimento() && alimento.getInformacion()!=data.getAlimento().getInformacion()
-        ).forEach(alimento -> {
-            alimento.setCantidadAlimento(data.getAlimento().getCantidadAlimento());
-            alimento.setInformacion(data.getAlimento().getInformacion());
-        });
+        try {
+            Comida comidaUsuario = listarUnaComidaUsuarioFecha(data.getEmail(), data.getFecha(), data.getTipoComida());
+            comidaUsuario.getListadoAlimentos().stream().filter(alimento ->
+                    alimento.getCantidadAlimento() != data.getAlimento().getCantidadAlimento() && alimento.getInformacion() != data.getAlimento().getInformacion()
+            ).forEach(alimento -> {
+                alimento.setCantidadAlimento(data.getAlimento().getCantidadAlimento());
+                alimento.setInformacion(data.getAlimento().getInformacion());
+            });
 
-        recomendacionService.actualizarPositivo(comidaUsuario);
-        return comidaRepository.save(comidaUsuario);
+            recomendacionService.actualizarPositivo(comidaUsuario);
+            return comidaRepository.save(comidaUsuario);
+        }catch (RuntimeException e){
+            throw new RuntimeException(ERROR_EDITAR);
+        }
     }
 
     @Override
     public void eliminarComida(String fechaDia,String email,TipoComida tipoComida) {
-        Comida comidaParaEliminar = comidaRepository.findByFechaComidaAndUsuarioEmailAndTipoComida(LocalDateConverter.stringToLocalDateConverter(fechaDia),email,tipoComida).orElseThrow(()->new RuntimeException("No se ha encontrado la comida"));
-        comidaRepository.deleteById(comidaParaEliminar.getIdComida());
-        recomendacionService.actualizarNegativo(comidaParaEliminar);
+        try {
+            Comida comidaParaEliminar = comidaRepository.findByFechaComidaAndUsuarioEmailAndTipoComida(LocalDateConverter.stringToLocalDateConverter(fechaDia), email, tipoComida).orElseThrow(() -> new RuntimeException("No se ha encontrado la comida"));
+            comidaRepository.deleteById(comidaParaEliminar.getIdComida());
+            recomendacionService.actualizarNegativo(comidaParaEliminar);
+        }catch (RuntimeException e){
+            throw new RuntimeException(ERROR_ELIMINAR);
+        }
     }
 }
