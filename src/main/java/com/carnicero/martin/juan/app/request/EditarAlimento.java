@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class EditarAlimento {
 
-    private Long idAlimento;
     private int cantidad;
     private String codigoAlimento;
 

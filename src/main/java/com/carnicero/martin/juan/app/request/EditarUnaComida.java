@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -14,5 +15,5 @@ public class EditarUnaComida {
     private String email;
     private String fecha;
     private TipoComida tipoComida;
-    List<Alimento> alimentos;
+    private Alimento alimento;
 }

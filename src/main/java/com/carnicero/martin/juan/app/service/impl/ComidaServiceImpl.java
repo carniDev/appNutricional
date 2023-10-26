@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.carnicero.martin.juan.app.util.converter.AlimentoConverter.*;
@@ -59,14 +60,14 @@ public class ComidaServiceImpl implements ComidaService {
     @Override
     public Comida editarComida(EditarUnaComida data) {
         Comida comidaUsuario = listarUnaComidaUsuarioFecha(data.getEmail(), data.getFecha(), data.getTipoComida());
-        data.getAlimentos().stream().map(alimentoEditado -> {
-            List<Alimento> alimentos = new ArrayList<>();
-            for (Alimento alimentoOriginal : comidaUsuario.getListadoAlimentos()) {
-                alimentos.add(alimentoService.editarAlimento(alimentoOriginal, alimentoEditado));
-            }
-            return alimentos;
-        }).collect(Collectors.toList());
+        comidaUsuario.getListadoAlimentos().stream().filter(alimento ->
+            alimento.getCantidadAlimento()!=data.getAlimento().getCantidadAlimento() && alimento.getInformacion()!=data.getAlimento().getInformacion()
+        ).forEach(alimento -> {
+            alimento.setCantidadAlimento(data.getAlimento().getCantidadAlimento());
+            alimento.setInformacion(data.getAlimento().getInformacion());
+        });
 
+        recomendacionService.actualizarPositivo(comidaUsuario);
         return comidaRepository.save(comidaUsuario);
     }
 

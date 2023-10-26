@@ -10,6 +10,8 @@ import com.carnicero.martin.juan.app.service.interfaces.InformacionNutricionalSe
 import com.carnicero.martin.juan.app.util.converter.AlimentoConverter;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AlimentoServiceImpl implements AlimentoService {
     private final AlimentoRepository alimentoRepository;
@@ -32,17 +34,27 @@ public class AlimentoServiceImpl implements AlimentoService {
         return alimentoRepository.save(alimentoParaRegistrar);
     }
 
-    public Alimento editarAlimento(EditarAlimento data) {
-       Alimento alimento = buscarAlimento(data.getIdAlimento());
+        public Alimento editarAlimento(Long id,EditarAlimento data) {
+        Alimento alimento = buscarAlimento(id);
         InformacionNutricionalAlimento informacion = informacionService.obtenerInformacion(data.getCodigoAlimento());
         AlimentoConverter.editarAlimentoToEntity(data,alimento,informacion);
         return alimento;
     }
 
 
-    public Alimento editarAlimento(Alimento original,Alimento data) {
-        Alimento alimento = buscarAlimento(original.getIdAlimento());
-        AlimentoConverter.alimentoEditadoToEntity(alimento,data);
-        return alimento;
+
+    @Override
+    public void eliminarAlimentos(List<Alimento> alimentos) {
+
+        alimentos.forEach((alimento -> {
+            alimento.getComidas().clear();
+            alimentoRepository.deleteById(alimento.getIdAlimento());
+        }));
+
+    }
+
+    @Override
+    public List<Alimento> listarAlimentos() {
+        return alimentoRepository.findAll();
     }
 }

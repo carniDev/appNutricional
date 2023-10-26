@@ -28,7 +28,7 @@ public class Alimento {
     private double cantidadAlimento;
     @JsonManagedReference
     @JsonIgnore
-    @ManyToMany(mappedBy = "listadoAlimentos", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST},mappedBy = "listadoAlimentos")
     private List<Comida> comidas;
 
     public Alimento() {
