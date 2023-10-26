@@ -5,16 +5,15 @@ import com.carnicero.martin.juan.app.repository.InformacionNutricionalRepository
 import com.carnicero.martin.juan.app.request.EditarInformacionNutricional;
 import com.carnicero.martin.juan.app.request.InformacionNutricional;
 import com.carnicero.martin.juan.app.service.interfaces.InformacionNutricionalService;
-import com.carnicero.martin.juan.app.util.Constantes.Constantes;
 import com.carnicero.martin.juan.app.util.converter.InformacionNutricionalConverter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
-import static com.carnicero.martin.juan.app.util.Constantes.Constantes.ERROR_ELIMINAR;
 import static com.carnicero.martin.juan.app.util.converter.InformacionNutricionalConverter.infomacionNutricionalToEntity;
-import static com.carnicero.martin.juan.app.util.generador.GeneradorCodigo.*;
+import static com.carnicero.martin.juan.app.util.generador.GeneradorCodigo.comprobarCodigoExistente;
+import static com.carnicero.martin.juan.app.util.generador.GeneradorCodigo.generarCodigoUnico;
 
 @Service
 public class InformacionNutricionalServiceImpl implements InformacionNutricionalService {

@@ -2,23 +2,18 @@ package com.carnicero.martin.juan.app.service.impl;
 
 import com.carnicero.martin.juan.app.model.*;
 import com.carnicero.martin.juan.app.repository.ComidaRepository;
-import com.carnicero.martin.juan.app.repository.RecomendacionDiariaRepository;
 import com.carnicero.martin.juan.app.request.EditarUnaComida;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
 import com.carnicero.martin.juan.app.service.interfaces.*;
-import com.carnicero.martin.juan.app.util.Constantes.Constantes;
 import com.carnicero.martin.juan.app.util.converter.LocalDateConverter;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
-import static com.carnicero.martin.juan.app.util.converter.AlimentoConverter.*;
-import static com.carnicero.martin.juan.app.util.converter.ComidaConverter.*;
-import static com.carnicero.martin.juan.app.util.converter.LocalDateConverter.*;
+import static com.carnicero.martin.juan.app.util.converter.AlimentoConverter.registrarAlimentoToEntityComida;
+import static com.carnicero.martin.juan.app.util.converter.ComidaConverter.registrarComidaToEntity;
+import static com.carnicero.martin.juan.app.util.converter.LocalDateConverter.stringToLocalDateConverter;
 
 @Service
 public class ComidaServiceImpl implements ComidaService {
