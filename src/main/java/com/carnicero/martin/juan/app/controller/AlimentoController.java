@@ -34,9 +34,9 @@ public class AlimentoController {
 
         try {
             Alimento alimentoParaRegistrar = alimentoService.registrarAlimento(data);
-            return ResponseEntity.ok(REGISTRAR_ALIMENTO);
+            return ResponseEntity.ok(REGISTRAR_OK);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ERROR_REGISTRAR_ALIMENTO);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ERROR_REGISTRAR);
         }
     }
 
@@ -44,9 +44,9 @@ public class AlimentoController {
     public ResponseEntity editarAlimento(@RequestParam Long id, @RequestBody EditarAlimento editarAlimento) {
         try {
             Alimento actualizado = alimentoService.editarAlimento(id, editarAlimento);
-            return ResponseEntity.ok(EDITAR_ALIMENTO);
+            return ResponseEntity.ok(EDITAR_OK);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ERROR_EDITAR_ALIMENTO);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ERROR_EDITAR);
         }
     }
 
