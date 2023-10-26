@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 
+import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
+
 @RestController
-@RequestMapping("app-nutricional/alimento")
+@RequestMapping(ALIMENTO_CONTROLLER+"/"+ALIMENTO_CONTROLLER)
 public class AlimentoController {
 
     private final AlimentoService alimentoService;
@@ -21,32 +23,31 @@ public class AlimentoController {
         this.alimentoService = alimentoService;
     }
 
-    @GetMapping("/listar")
+    @GetMapping(LISTAR)
     public ResponseEntity listarAlimentos() {
         List<Alimento> alimentos = alimentoService.listarAlimentos();
-
         return ResponseEntity.ok(alimentos.isEmpty() ? Collections.emptyList() : alimentos);
     }
 
-    @PostMapping("/registrar")
+    @PostMapping(REGISTRAR)
     public ResponseEntity registrarAlimento(@RequestBody RegistrarAlimento data) {
 
         try {
             Alimento alimentoParaRegistrar = alimentoService.registrarAlimento(data);
-            return ResponseEntity.ok(alimentoParaRegistrar);
+            return ResponseEntity.ok(REGISTRAR_ALIMENTO);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha podido registrar el alimento");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ERROR_REGISTRAR_ALIMENTO);
         }
     }
 
-    @PutMapping("/editar")
-    public ResponseEntity editarAlimento(@RequestParam Long id,@RequestBody EditarAlimento editarAlimento){
-        try{
-            Alimento actualizado = alimentoService.editarAlimento(id,editarAlimento);
-            return ResponseEntity.ok("Alimento editado correctamente");
-        }catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha podido editar el alimento");
-
+    @PutMapping(EDITAR)
+    public ResponseEntity editarAlimento(@RequestParam Long id, @RequestBody EditarAlimento editarAlimento) {
+        try {
+            Alimento actualizado = alimentoService.editarAlimento(id, editarAlimento);
+            return ResponseEntity.ok(EDITAR_ALIMENTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ERROR_EDITAR_ALIMENTO);
         }
     }
+
 }
