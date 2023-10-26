@@ -9,8 +9,11 @@ public final class Constantes {
     public final static String REGISTRAR_OK="Se ha registrado correctamente";
     public final static String EDITAR_OK="Se ha editado correctamente";
     public final static String ELIMINAR_OK ="Se ha eliminado correctamente";
+    public final static String SIN_INFORMACION = "No hay informacion para mostrar";
+    public final static String NO_ENCONTRADO="No se ha encontrado compruebe los datos";
     public final static String ERROR_REGISTRAR ="No se ha podido registrar compruebe los datos";
     public final static String ERROR_EDITAR="No se ha podido editar compruebe los datos";
+    public final static String ERROR_ELIMINAR="No se ha podido eliminar compruebe los datos";
     public final static String LISTAR="listar";
     public final static String REGISTRAR="registrar";
     public final static String EDITAR="editar";
