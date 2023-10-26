@@ -49,10 +49,10 @@ public class RecomendacionDiariaServiceImpl implements RecomendacionDiariaServic
     public RecomendacionDiaria actualizarPositivo(Comida comida) {
         RecomendacionDiaria recomendacionDiaria = obtenerInformacion(comida.getFechaComida(),comida.getUsuario().getEmail());
         MacroNutritientesComida nutriente = calcular(comida.getListadoAlimentos());
-        recomendacionDiaria.setHidratosCarbonoDiarios(recomendacionDiaria.getHidratosCarbonoDiarios()+nutriente.getHidratosCarbono());
-        recomendacionDiaria.setProteinaDiaria(recomendacionDiaria.getProteinaDiaria()+nutriente.getProteinas());
-        recomendacionDiaria.setGrasaDiaria(recomendacionDiaria.getGrasaDiaria()+nutriente.getGrasas());
-        recomendacionDiaria.setKcalDiarias(recomendacionDiaria.getKcalDiarias()+nutriente.getKcal());
+        recomendacionDiaria.setHidratosCarbonoDiarios(nutriente.getHidratosCarbono());
+        recomendacionDiaria.setProteinaDiaria(nutriente.getProteinas());
+        recomendacionDiaria.setGrasaDiaria(nutriente.getGrasas());
+        recomendacionDiaria.setKcalDiarias(nutriente.getKcal());
         return recomendacionRepository.save(recomendacionDiaria);
     }
 

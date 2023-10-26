@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
 import static com.carnicero.martin.juan.app.util.converter.InformacionNutricionalConverter.infomacionNutricionalToEntity;
-import static com.carnicero.martin.juan.app.util.generador.GeneradorCodigo.*;
+import static com.carnicero.martin.juan.app.util.generador.GeneradorCodigo.comprobarCodigoExistente;
+import static com.carnicero.martin.juan.app.util.generador.GeneradorCodigo.generarCodigoUnico;
 
 @Service
 public class InformacionNutricionalServiceImpl implements InformacionNutricionalService {
@@ -24,7 +26,7 @@ public class InformacionNutricionalServiceImpl implements InformacionNutricional
 
     @Override
     public InformacionNutricionalAlimento obtenerInformacion(String codigoAlimento) {
-        return informacionRepository.findByCodigoAlimento(codigoAlimento).orElseThrow(()->new RuntimeException("No se ha podido encontrar la informacion"));
+        return informacionRepository.findByCodigoAlimento(codigoAlimento).orElseThrow(()->new RuntimeException(NO_ENCONTRADO));
     }
 
     @Override
@@ -34,25 +36,38 @@ public class InformacionNutricionalServiceImpl implements InformacionNutricional
 
     @Override
     public InformacionNutricionalAlimento registrarAlimento(InformacionNutricional data) {
-        InformacionNutricionalAlimento alimentoParaRegistrar = infomacionNutricionalToEntity(data);
-        String codigo = generarCodigoUnico();
-        while(comprobarCodigoExistente(informacionRepository,codigo)){
-            codigo = generarCodigoUnico();
+        try {
+            InformacionNutricionalAlimento alimentoParaRegistrar = infomacionNutricionalToEntity(data);
+            String codigo = generarCodigoUnico();
+            while (comprobarCodigoExistente(informacionRepository, codigo)) {
+                codigo = generarCodigoUnico();
+            }
+            alimentoParaRegistrar.setCodigoAlimento(codigo);
+            return informacionRepository.save(alimentoParaRegistrar);
+        }catch (RuntimeException e){
+            throw new RuntimeException(ERROR_REGISTRAR);
         }
-        alimentoParaRegistrar.setCodigoAlimento(codigo);
-        return informacionRepository.save(alimentoParaRegistrar);
     }
 
     @Override
     public InformacionNutricionalAlimento editarAlimento(String codigo,EditarInformacionNutricional data) {
+        try{
         InformacionNutricionalAlimento alimentoParaEditar = obtenerInformacion(codigo);
         InformacionNutricionalConverter.editarInfomacionNutricionalToEntity(alimentoParaEditar,data);
         return informacionRepository.save(alimentoParaEditar);
+        }catch (RuntimeException e){
+            throw new RuntimeException(ERROR_EDITAR);
+        }
+
     }
 
     @Override
     public void eliminarAlimento(String codigo) {
+        try{
         InformacionNutricionalAlimento alimentoParaEliminar = obtenerInformacion(codigo);
         informacionRepository.delete(alimentoParaEliminar);
+        }catch (RuntimeException e){
+            throw new RuntimeException(ERROR_ELIMINAR);
+        }
     }
 }

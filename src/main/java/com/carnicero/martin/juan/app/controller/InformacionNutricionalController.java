@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
+
 @RestController
 @RequestMapping("/app-nutricional/informacion-nutricional")
 public class InformacionNutricionalController {
@@ -19,38 +21,38 @@ private final InformacionNutricionalService informacionService;
         this.informacionService = informacionService;
     }
 
-    @GetMapping("/listado")
+    @GetMapping(LISTAR)
     public ResponseEntity listarAlimentos(){
         List<?> informacionAlimentos = informacionService.obtenerInformacion();
-        return ResponseEntity.ok(informacionAlimentos.isEmpty()?"No hay alimentos para mostrar":informacionAlimentos);
+        return ResponseEntity.ok(informacionAlimentos.isEmpty()? SIN_INFORMACION :informacionAlimentos);
     }
 
-    @PostMapping("/registrar")
+    @PostMapping(REGISTRAR)
     public ResponseEntity registrarAlimentos(@Valid @RequestBody InformacionNutricional data){
         try {
             return ResponseEntity.ok(informacionService.registrarAlimento(data));
         }catch (RuntimeException e){
-         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha podido registrar el alimento");
+         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
-    @PutMapping("/editar")
+    @PutMapping(EDITAR)
     public ResponseEntity editarInformacionAlimento(@RequestParam String codigo,@Valid @RequestBody EditarInformacionNutricional data){
 
         try {
             return ResponseEntity.ok(informacionService.editarAlimento(codigo,data));
         }catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha podido editar el alimento");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
-    @DeleteMapping("/eliminar")
+    @DeleteMapping(ELIMINAR)
     public ResponseEntity eliminarInformacionAlimento(@RequestParam String codigo){
         try{
             informacionService.eliminarAlimento(codigo);
-            return ResponseEntity.ok("Alimento eliminado");
+            return ResponseEntity.ok(ELIMINAR_OK);
         }catch (RuntimeException e){
-           return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha podido eliminar el alimento");
+           return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 

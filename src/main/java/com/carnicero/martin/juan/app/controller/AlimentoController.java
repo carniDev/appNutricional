@@ -1,16 +1,20 @@
 package com.carnicero.martin.juan.app.controller;
 
 import com.carnicero.martin.juan.app.model.Alimento;
+import com.carnicero.martin.juan.app.request.EditarAlimento;
 import com.carnicero.martin.juan.app.request.RegistrarAlimento;
 import com.carnicero.martin.juan.app.service.interfaces.AlimentoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.List;
+
+import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
 
 @RestController
-@RequestMapping("app-nutricional/alimento")
+@RequestMapping(ALIMENTO_CONTROLLER+"/"+ALIMENTO_CONTROLLER)
 public class AlimentoController {
 
     private final AlimentoService alimentoService;
@@ -19,21 +23,31 @@ public class AlimentoController {
         this.alimentoService = alimentoService;
     }
 
-    public ResponseEntity listarAlimentos(@RequestParam String email) {
-
-        return null;
+    @GetMapping(LISTAR)
+    public ResponseEntity listarAlimentos() {
+        List<Alimento> alimentos = alimentoService.listarAlimentos();
+        return ResponseEntity.ok(alimentos.isEmpty() ? Collections.emptyList() : alimentos);
     }
 
-    public ResponseEntity registrarAlimento(@RequestParam RegistrarAlimento data) {
+    @PostMapping(REGISTRAR)
+    public ResponseEntity registrarAlimento(@RequestBody RegistrarAlimento data) {
 
         try {
             Alimento alimentoParaRegistrar = alimentoService.registrarAlimento(data);
-            return ResponseEntity.ok(alimentoParaRegistrar);
+            return ResponseEntity.ok(REGISTRAR_OK);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se ha podido registrar el alimento");
-
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ERROR_REGISTRAR);
         }
-
-
     }
+
+    @PutMapping(EDITAR)
+    public ResponseEntity editarAlimento(@RequestParam Long id, @RequestBody EditarAlimento editarAlimento) {
+        try {
+            Alimento actualizado = alimentoService.editarAlimento(id, editarAlimento);
+            return ResponseEntity.ok(EDITAR_OK);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ERROR_EDITAR);
+        }
+    }
+
 }

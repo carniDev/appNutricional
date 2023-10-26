@@ -2,20 +2,18 @@ package com.carnicero.martin.juan.app.service.impl;
 
 import com.carnicero.martin.juan.app.model.*;
 import com.carnicero.martin.juan.app.repository.ComidaRepository;
-import com.carnicero.martin.juan.app.repository.RecomendacionDiariaRepository;
 import com.carnicero.martin.juan.app.request.EditarUnaComida;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
 import com.carnicero.martin.juan.app.service.interfaces.*;
 import com.carnicero.martin.juan.app.util.converter.LocalDateConverter;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.carnicero.martin.juan.app.util.converter.AlimentoConverter.*;
-import static com.carnicero.martin.juan.app.util.converter.ComidaConverter.*;
-import static com.carnicero.martin.juan.app.util.converter.LocalDateConverter.*;
+import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
+import static com.carnicero.martin.juan.app.util.converter.AlimentoConverter.registrarAlimentoToEntityComida;
+import static com.carnicero.martin.juan.app.util.converter.ComidaConverter.registrarComidaToEntity;
+import static com.carnicero.martin.juan.app.util.converter.LocalDateConverter.stringToLocalDateConverter;
 
 @Service
 public class ComidaServiceImpl implements ComidaService {
@@ -53,27 +51,35 @@ public class ComidaServiceImpl implements ComidaService {
             recomendacionService.actualizarPositivo(comidaParaRegistrar);
             return comidaRepository.save(comidaParaRegistrar);
         }
-        throw new RuntimeException("No puedes registrar el mismo tipo de comida");
+        throw new RuntimeException(ERROR_REGISTRAR);
     }
 
     @Override
     public Comida editarComida(EditarUnaComida data) {
-        Comida comidaUsuario = listarUnaComidaUsuarioFecha(data.getEmail(), data.getFecha(), data.getTipoComida());
-        data.getAlimentos().stream().map(alimentoEditado -> {
-            List<Alimento> alimentos = new ArrayList<>();
-            for (Alimento alimentoOriginal : comidaUsuario.getListadoAlimentos()) {
-                alimentos.add(alimentoService.editarAlimento(alimentoOriginal, alimentoEditado));
-            }
-            return alimentos;
-        }).collect(Collectors.toList());
+        try {
+            Comida comidaUsuario = listarUnaComidaUsuarioFecha(data.getEmail(), data.getFecha(), data.getTipoComida());
+            comidaUsuario.getListadoAlimentos().stream().filter(alimento ->
+                    alimento.getCantidadAlimento() != data.getAlimento().getCantidadAlimento() && alimento.getInformacion() != data.getAlimento().getInformacion()
+            ).forEach(alimento -> {
+                alimento.setCantidadAlimento(data.getAlimento().getCantidadAlimento());
+                alimento.setInformacion(data.getAlimento().getInformacion());
+            });
 
-        return comidaRepository.save(comidaUsuario);
+            recomendacionService.actualizarPositivo(comidaUsuario);
+            return comidaRepository.save(comidaUsuario);
+        }catch (RuntimeException e){
+            throw new RuntimeException(ERROR_EDITAR);
+        }
     }
 
     @Override
     public void eliminarComida(String fechaDia,String email,TipoComida tipoComida) {
-        Comida comidaParaEliminar = comidaRepository.findByFechaComidaAndUsuarioEmailAndTipoComida(LocalDateConverter.stringToLocalDateConverter(fechaDia),email,tipoComida).orElseThrow(()->new RuntimeException("No se ha encontrado la comida"));
-        comidaRepository.deleteById(comidaParaEliminar.getIdComida());
-        recomendacionService.actualizarNegativo(comidaParaEliminar);
+        try {
+            Comida comidaParaEliminar = comidaRepository.findByFechaComidaAndUsuarioEmailAndTipoComida(LocalDateConverter.stringToLocalDateConverter(fechaDia), email, tipoComida).orElseThrow(() -> new RuntimeException("No se ha encontrado la comida"));
+            comidaRepository.deleteById(comidaParaEliminar.getIdComida());
+            recomendacionService.actualizarNegativo(comidaParaEliminar);
+        }catch (RuntimeException e){
+            throw new RuntimeException(ERROR_ELIMINAR);
+        }
     }
 }
