@@ -15,5 +15,9 @@ public class InformacionComida {
     private LocalDate fechaComida;
     private String nombreUsuario;
     private String email;
+    private int kcal;
+    private int hidratosCarbono;
+    private int proteinas;
+    private int grasas;
     private List<Alimento> alimentos;
 }
