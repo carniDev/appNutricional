@@ -2,6 +2,7 @@ package com.carnicero.martin.juan.app.controller;
 
 import com.carnicero.martin.juan.app.model.Comida;
 import com.carnicero.martin.juan.app.model.TipoComida;
+import com.carnicero.martin.juan.app.request.EditarComidaRequest;
 import com.carnicero.martin.juan.app.request.EditarUnaComida;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
 import com.carnicero.martin.juan.app.response.InformacionComida;
@@ -63,7 +64,7 @@ public class ComidaController {
     }
 
     @PutMapping(EDITAR)
-    public ResponseEntity editarComida(@RequestBody EditarUnaComida data) {
+    public ResponseEntity editarComida(@RequestBody EditarComidaRequest data) {
         try {
             Comida comidaEditada = comidaService.editarComida(data);
             return ResponseEntity.ok(comidaEditada);

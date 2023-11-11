@@ -2,6 +2,7 @@ package com.carnicero.martin.juan.app.service.interfaces;
 
 import com.carnicero.martin.juan.app.model.Comida;
 import com.carnicero.martin.juan.app.model.TipoComida;
+import com.carnicero.martin.juan.app.request.EditarComidaRequest;
 import com.carnicero.martin.juan.app.request.EditarUnaComida;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
 
@@ -14,7 +15,7 @@ public interface ComidaService {
 
     Comida registrarComida(RegistrarComida data);
 
-    Comida editarComida(EditarUnaComida data);
+    Comida editarComida(EditarComidaRequest data);
 
     void eliminarComida(String fechaDia,String email,TipoComida tipoComida);
 }

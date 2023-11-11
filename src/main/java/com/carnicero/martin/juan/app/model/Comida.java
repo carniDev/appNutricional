@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,9 +23,10 @@ public class Comida {
     private Long idComida;
     @Enumerated(EnumType.STRING)
     private TipoComida tipoComida;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Column(name = "fecha_comida")
     private LocalDate fechaComida;
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.REMOVE},fetch = FetchType.LAZY)
     private List<Alimento> listadoAlimentos;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
