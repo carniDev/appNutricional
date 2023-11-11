@@ -26,7 +26,7 @@ public class Comida {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Column(name = "fecha_comida")
     private LocalDate fechaComida;
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.REMOVE},fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Alimento> listadoAlimentos;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)

@@ -1,9 +1,6 @@
 package com.carnicero.martin.juan.app.service.impl;
 
-import com.carnicero.martin.juan.app.model.Comida;
-import com.carnicero.martin.juan.app.model.RecomendacionDiaria;
-import com.carnicero.martin.juan.app.model.TipoComida;
-import com.carnicero.martin.juan.app.model.Usuario;
+import com.carnicero.martin.juan.app.model.*;
 import com.carnicero.martin.juan.app.repository.ComidaRepository;
 import com.carnicero.martin.juan.app.repository.RecomendacionDiariaRepository;
 import com.carnicero.martin.juan.app.request.EditarComidaRequest;
@@ -14,7 +11,9 @@ import com.carnicero.martin.juan.app.util.converter.LocalDateConverter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
 import static com.carnicero.martin.juan.app.util.converter.ComidaConverter.registrarComidaToEntity;
@@ -61,8 +60,18 @@ public class ComidaServiceImpl implements ComidaService {
     public Comida editarComida(EditarComidaRequest data) {
         try {
             Comida comidaUsuario = listarUnaComidaUsuarioFecha(data.getEmail(), data.getFechaComida(), data.getTipoComida());
-            comidaUsuario.setListadoAlimentos(data.getListadoAlimentos());
-            actualizarMacronutrientes(data.getFechaComida(),data.getEmail());
+           Map<Long,Alimento>alimentos = data.getListadoAlimentos().stream().collect(Collectors.toMap(Alimento::getIdAlimento,food ->food));
+            comidaUsuario.getListadoAlimentos().stream()
+                    .filter(alimento -> alimentos.containsKey(alimento.getIdAlimento()))
+                    .forEach(alimento -> {
+                        if(alimentos.containsKey(alimento.getIdAlimento())){
+                            Alimento alimentoParaEditar = alimentos.get(alimento.getIdAlimento());
+                            alimento.setCantidadAlimento(alimentoParaEditar.getCantidadAlimento());
+                            alimento.setInformacion(alimentoParaEditar.getInformacion());
+                        }
+                    });
+
+             actualizarMacronutrientes(data.getFechaComida(),data.getEmail());
             return comidaRepository.save(comidaUsuario);
         }catch (RuntimeException e){
             throw new RuntimeException(ERROR_EDITAR);
