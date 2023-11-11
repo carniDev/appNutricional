@@ -1,5 +1,6 @@
 package com.carnicero.martin.juan.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class RecomendacionDiaria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_recomendacion_diaria")
     private Long idRecomendacionDiaria;
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE,CascadeType.DETACH})
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;

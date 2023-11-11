@@ -3,6 +3,7 @@ package com.carnicero.martin.juan.app.util.converter;
 import com.carnicero.martin.juan.app.model.Alimento;
 import com.carnicero.martin.juan.app.model.Comida;
 import com.carnicero.martin.juan.app.response.InformacionComida;
+import com.carnicero.martin.juan.app.response.InformacionComidaUsuario;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -17,7 +18,16 @@ public class InformacionComidaConverter {
         informacionComida.setAlimentos(data.getListadoAlimentos());
         calcularNutritientes(informacionComida);
         return informacionComida;
+    }
 
+    public static InformacionComidaUsuario comidaToInformacionUsuario(Comida data){
+        InformacionComidaUsuario informacion = new InformacionComidaUsuario();
+        informacion.setIdComida(data.getIdComida());
+        informacion.setTipoComida(data.getTipoComida().name());
+        informacion.setCantidad(data.getListadoAlimentos().get(0).getCantidadAlimento());
+        informacion.setCodigoAlimento(data.getListadoAlimentos().get(0).getInformacion().getCodigoAlimento());
+        informacion.setNombreAlimento(data.getListadoAlimentos().get(0).getInformacion().getNombre());
+        return informacion;
     }
 
 

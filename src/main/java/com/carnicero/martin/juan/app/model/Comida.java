@@ -24,8 +24,7 @@ public class Comida {
     private TipoComida tipoComida;
     @Column(name = "fecha_comida")
     private LocalDate fechaComida;
-    @JsonBackReference
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST},fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.LAZY)
     private List<Alimento> listadoAlimentos;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)

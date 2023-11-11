@@ -1,6 +1,8 @@
 package com.carnicero.martin.juan.app.service.impl;
 
-import com.carnicero.martin.juan.app.model.*;
+import com.carnicero.martin.juan.app.model.Comida;
+import com.carnicero.martin.juan.app.model.TipoComida;
+import com.carnicero.martin.juan.app.model.Usuario;
 import com.carnicero.martin.juan.app.repository.ComidaRepository;
 import com.carnicero.martin.juan.app.request.EditarUnaComida;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
@@ -11,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
-import static com.carnicero.martin.juan.app.util.converter.AlimentoConverter.registrarAlimentoToEntityComida;
 import static com.carnicero.martin.juan.app.util.converter.ComidaConverter.registrarComidaToEntity;
 import static com.carnicero.martin.juan.app.util.converter.LocalDateConverter.stringToLocalDateConverter;
 
@@ -43,11 +44,9 @@ public class ComidaServiceImpl implements ComidaService {
 
     @Override
     public Comida registrarComida(RegistrarComida data) {
-        if (!comidaRepository.existsByFechaComidaAndUsuarioEmailAndTipoComida(data.getFecha(), data.getEmail(), data.getTipoComida())) {
-            InformacionNutricionalAlimento informacion = informacionService.obtenerInformacion(data.getCodigoAlimento());
-            Alimento alimentoARegistrar = registrarAlimentoToEntityComida(data.getCantidadComida(), informacion);
+        if (!comidaRepository.existsByFechaComidaAndUsuarioEmailAndTipoComida(LocalDateConverter.stringToLocalDateConverter(data.getFechaComida()), data.getEmail(), data.getTipoComida())) {
             Usuario usuario = usuarioService.obtenerInformacionUsuario(data.getEmail());
-            Comida comidaParaRegistrar = registrarComidaToEntity(data, alimentoARegistrar, usuario);
+            Comida comidaParaRegistrar = registrarComidaToEntity(data,usuario);
             recomendacionService.actualizarPositivo(comidaParaRegistrar);
             return comidaRepository.save(comidaParaRegistrar);
         }
