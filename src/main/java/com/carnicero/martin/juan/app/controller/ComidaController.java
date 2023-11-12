@@ -2,9 +2,11 @@ package com.carnicero.martin.juan.app.controller;
 
 import com.carnicero.martin.juan.app.model.Comida;
 import com.carnicero.martin.juan.app.model.TipoComida;
+import com.carnicero.martin.juan.app.request.EditarComidaRequest;
 import com.carnicero.martin.juan.app.request.EditarUnaComida;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
 import com.carnicero.martin.juan.app.response.InformacionComida;
+import com.carnicero.martin.juan.app.response.InformacionComidaUsuario;
 import com.carnicero.martin.juan.app.service.interfaces.ComidaService;
 import com.carnicero.martin.juan.app.service.interfaces.RecomendacionDiariaService;
 import com.carnicero.martin.juan.app.util.converter.InformacionComidaConverter;
@@ -16,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
-import static com.carnicero.martin.juan.app.util.converter.InformacionComidaConverter.comidaToInformacion;
+import static com.carnicero.martin.juan.app.util.converter.InformacionComidaConverter.comidaToInformacionUsuario;
 
 @RestController
 @RequestMapping(NOMBRE_APP+"/"+ COMIDA_CONTROLLER)
@@ -33,7 +35,7 @@ public class ComidaController {
     @GetMapping(BUSCAR)
     public ResponseEntity listarUnaComidaUsuarioDia(@RequestParam String fecha, @RequestParam String email, @RequestParam TipoComida tipoComida) {
         try {
-            InformacionComida informacionComida = comidaToInformacion(comidaService.listarUnaComidaUsuarioFecha(email, fecha, tipoComida));
+            InformacionComidaUsuario informacionComida = comidaToInformacionUsuario(comidaService.listarUnaComidaUsuarioFecha(email, fecha, tipoComida));
             return ResponseEntity.ok(informacionComida);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -53,17 +55,16 @@ public class ComidaController {
 
     @PostMapping(REGISTRAR)
     public ResponseEntity registrarComida(@RequestBody RegistrarComida data) {
-
         try {
             Comida comidaRegistrada = comidaService.registrarComida(data);
-            return ResponseEntity.ok(comidaRegistrada);
+            return ResponseEntity.ok(REGISTRAR_OK);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     @PutMapping(EDITAR)
-    public ResponseEntity editarComida(@RequestBody EditarUnaComida data) {
+    public ResponseEntity editarComida(@RequestBody EditarComidaRequest data) {
         try {
             Comida comidaEditada = comidaService.editarComida(data);
             return ResponseEntity.ok(comidaEditada);

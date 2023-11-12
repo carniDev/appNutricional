@@ -35,6 +35,11 @@ public class InformacionNutricionalServiceImpl implements InformacionNutricional
     }
 
     @Override
+    public List<?> obtenerInformacionByNombre(String nombre) {
+        return informacionRepository.findByNombreContaining(nombre);
+    }
+
+    @Override
     public InformacionNutricionalAlimento registrarAlimento(InformacionNutricional data) {
         try {
             InformacionNutricionalAlimento alimentoParaRegistrar = infomacionNutricionalToEntity(data);

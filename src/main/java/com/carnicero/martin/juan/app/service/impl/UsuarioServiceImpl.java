@@ -8,6 +8,7 @@ import com.carnicero.martin.juan.app.service.interfaces.UsuarioService;
 import com.carnicero.martin.juan.app.util.converter.UsuarioConverter;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -30,7 +31,6 @@ public final UsuarioRepository usuarioRepository;
             usuarioParaRegistrar.setFechaRegistro(LocalDateTime.now());
             return usuarioRepository.save(usuarioParaRegistrar);
         }
-
         throw new RuntimeException("El email ya existe en la base de datos");
 
     }

@@ -1,5 +1,4 @@
 package com.carnicero.martin.juan.app.controller;
-
 import com.carnicero.martin.juan.app.request.EditarInformacionNutricional;
 import com.carnicero.martin.juan.app.request.InformacionNutricional;
 import com.carnicero.martin.juan.app.service.interfaces.InformacionNutricionalService;
@@ -13,7 +12,7 @@ import java.util.List;
 import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
 
 @RestController
-@RequestMapping("/app-nutricional/informacion-nutricional")
+@RequestMapping(NOMBRE_APP+"/"+INFORMACION_NUTRICIONAL)
 public class InformacionNutricionalController {
 private final InformacionNutricionalService informacionService;
 
@@ -24,6 +23,11 @@ private final InformacionNutricionalService informacionService;
     @GetMapping(LISTAR)
     public ResponseEntity listarAlimentos(){
         List<?> informacionAlimentos = informacionService.obtenerInformacion();
+        return ResponseEntity.ok(informacionAlimentos.isEmpty()? SIN_INFORMACION :informacionAlimentos);
+    }
+    @GetMapping("listar-nombre")
+    public ResponseEntity listarAlimentosByNombre(@RequestParam String nombre){
+        List<?> informacionAlimentos = informacionService.obtenerInformacionByNombre(nombre);
         return ResponseEntity.ok(informacionAlimentos.isEmpty()? SIN_INFORMACION :informacionAlimentos);
     }
 

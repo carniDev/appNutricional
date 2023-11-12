@@ -9,12 +9,12 @@ import java.time.LocalDate;
 
 public class ComidaConverter {
 
-    public static Comida registrarComidaToEntity(RegistrarComida data, Alimento alimento, Usuario usuario){
+    public static Comida registrarComidaToEntity(RegistrarComida data, Usuario usuario){
         Comida comidaParaRegistrar = new Comida();
-        comidaParaRegistrar.setFechaComida(data.getFecha());
+        comidaParaRegistrar.setFechaComida(LocalDateConverter.stringToLocalDateConverter(data.getFechaComida()));
         comidaParaRegistrar.setTipoComida(data.getTipoComida());
+        comidaParaRegistrar.setListadoAlimentos(data.getListadoAlimentos());
         comidaParaRegistrar.setUsuario(usuario);
-        comidaParaRegistrar.getListadoAlimentos().add(alimento);
         return comidaParaRegistrar;
     }
 }
