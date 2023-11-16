@@ -1,9 +1,11 @@
 package com.carnicero.martin.juan.app.controller;
 
+import com.carnicero.martin.juan.app.exception.CreatedException;
+import com.carnicero.martin.juan.app.exception.DeletedException;
+import com.carnicero.martin.juan.app.exception.UpdatedException;
 import com.carnicero.martin.juan.app.model.Comida;
 import com.carnicero.martin.juan.app.model.TipoComida;
 import com.carnicero.martin.juan.app.request.EditarComidaRequest;
-import com.carnicero.martin.juan.app.request.EditarUnaComida;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
 import com.carnicero.martin.juan.app.response.InformacionComida;
 import com.carnicero.martin.juan.app.response.InformacionComidaUsuario;
@@ -21,7 +23,7 @@ import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
 import static com.carnicero.martin.juan.app.util.converter.InformacionComidaConverter.comidaToInformacionUsuario;
 
 @RestController
-@RequestMapping(NOMBRE_APP+"/"+ COMIDA_CONTROLLER)
+@RequestMapping(NOMBRE_APP + "/" + COMIDA_CONTROLLER)
 public class ComidaController {
 
     private final ComidaService comidaService;
@@ -58,7 +60,7 @@ public class ComidaController {
         try {
             Comida comidaRegistrada = comidaService.registrarComida(data);
             return ResponseEntity.ok(REGISTRAR_OK);
-        } catch (RuntimeException e) {
+        } catch (CreatedException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -68,21 +70,20 @@ public class ComidaController {
         try {
             Comida comidaEditada = comidaService.editarComida(data);
             return ResponseEntity.ok(comidaEditada);
-        } catch (RuntimeException e) {
+        } catch (UpdatedException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     @DeleteMapping(ELIMINAR)
-    public ResponseEntity eliminarComida(@RequestParam final String fechaDia, @RequestParam final String email,@RequestParam TipoComida tipoComida) {
+    public ResponseEntity eliminarComida(@RequestParam final String fechaDia, @RequestParam final String email, @RequestParam TipoComida tipoComida) {
         try {
             comidaService.eliminarComida(fechaDia, email, tipoComida);
             return ResponseEntity.ok(ELIMINAR_OK);
-        } catch (RuntimeException e) {
+        } catch (DeletedException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
 
 
 }

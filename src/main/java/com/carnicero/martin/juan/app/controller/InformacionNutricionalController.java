@@ -1,4 +1,7 @@
 package com.carnicero.martin.juan.app.controller;
+import com.carnicero.martin.juan.app.exception.CreatedException;
+import com.carnicero.martin.juan.app.exception.DeletedException;
+import com.carnicero.martin.juan.app.exception.UpdatedException;
 import com.carnicero.martin.juan.app.request.EditarInformacionNutricional;
 import com.carnicero.martin.juan.app.request.InformacionNutricional;
 import com.carnicero.martin.juan.app.service.interfaces.InformacionNutricionalService;
@@ -35,7 +38,7 @@ private final InformacionNutricionalService informacionService;
     public ResponseEntity registrarAlimentos(@Valid @RequestBody InformacionNutricional data){
         try {
             return ResponseEntity.ok(informacionService.registrarAlimento(data));
-        }catch (RuntimeException e){
+        }catch (CreatedException e){
          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -45,7 +48,7 @@ private final InformacionNutricionalService informacionService;
 
         try {
             return ResponseEntity.ok(informacionService.editarAlimento(codigo,data));
-        }catch (RuntimeException e){
+        }catch (UpdatedException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -55,7 +58,7 @@ private final InformacionNutricionalService informacionService;
         try{
             informacionService.eliminarAlimento(codigo);
             return ResponseEntity.ok(ELIMINAR_OK);
-        }catch (RuntimeException e){
+        }catch (DeletedException e){
            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }

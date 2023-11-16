@@ -1,5 +1,9 @@
 package com.carnicero.martin.juan.app.controller;
 
+import com.carnicero.martin.juan.app.exception.CreatedException;
+import com.carnicero.martin.juan.app.exception.DeletedException;
+import com.carnicero.martin.juan.app.exception.UpdatedException;
+import com.carnicero.martin.juan.app.exception.UserNotFound;
 import com.carnicero.martin.juan.app.model.Usuario;
 import com.carnicero.martin.juan.app.request.EditarUsuario;
 import com.carnicero.martin.juan.app.request.RegistrarUsuario;
@@ -28,7 +32,7 @@ public class UsuarioController {
         try {
             Usuario usuarioObtenido = usuarioService.obtenerInformacionUsuario(email);
             return ResponseEntity.ok(usuarioObtenido);
-        }catch (RuntimeException e){
+        }catch (UserNotFound e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -44,7 +48,7 @@ public class UsuarioController {
         try{
             Usuario usuarioRegistrado = usuarioService.registrarUsuario(usuario);
             return ResponseEntity.ok(REGISTRAR_OK);
-        }catch (RuntimeException e){
+        }catch (CreatedException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -54,7 +58,7 @@ public class UsuarioController {
         try {
             Usuario usuarioEditado = usuarioService.editarUsuario(email,usuario);
             return ResponseEntity.ok(EDITAR_OK);
-        }catch (RuntimeException e){
+        }catch (UpdatedException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
 
@@ -65,7 +69,7 @@ public class UsuarioController {
         try {
             usuarioService.eliminarUsuario(email);
             return ResponseEntity.ok(ELIMINAR_OK);
-        }catch (RuntimeException e){
+        }catch (DeletedException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
 
