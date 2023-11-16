@@ -1,5 +1,8 @@
 package com.carnicero.martin.juan.app.controller;
 
+import com.carnicero.martin.juan.app.exception.CreatedException;
+import com.carnicero.martin.juan.app.exception.DeletedException;
+import com.carnicero.martin.juan.app.exception.UpdatedException;
 import com.carnicero.martin.juan.app.model.Alimento;
 import com.carnicero.martin.juan.app.request.EditarAlimento;
 import com.carnicero.martin.juan.app.request.RegistrarAlimento;
@@ -35,7 +38,7 @@ public class AlimentoController {
         try {
             Alimento alimentoParaRegistrar = alimentoService.registrarAlimento(data);
             return ResponseEntity.ok(REGISTRAR_OK);
-        } catch (RuntimeException e) {
+        } catch (CreatedException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ERROR_REGISTRAR);
         }
     }
@@ -45,8 +48,19 @@ public class AlimentoController {
         try {
             Alimento actualizado = alimentoService.editarAlimento(id, editarAlimento);
             return ResponseEntity.ok(EDITAR_OK);
-        } catch (RuntimeException e) {
+        } catch (UpdatedException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ERROR_EDITAR);
+        }
+    }
+
+    @DeleteMapping(ELIMINAR)
+    public ResponseEntity eliminarAlimento(@RequestParam Long id){
+        try{
+            alimentoService.eliminarAlimento(id);
+            return ResponseEntity.ok(ELIMINAR_OK);
+
+        }catch (DeletedException e){
+            throw  new DeletedException("No se ha podido eliminar");
         }
     }
 

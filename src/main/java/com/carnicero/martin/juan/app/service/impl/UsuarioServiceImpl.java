@@ -1,5 +1,9 @@
 package com.carnicero.martin.juan.app.service.impl;
 
+import com.carnicero.martin.juan.app.exception.CreatedException;
+import com.carnicero.martin.juan.app.exception.DeletedException;
+import com.carnicero.martin.juan.app.exception.UpdatedException;
+import com.carnicero.martin.juan.app.exception.UserNotFound;
 import com.carnicero.martin.juan.app.model.Usuario;
 import com.carnicero.martin.juan.app.repository.UsuarioRepository;
 import com.carnicero.martin.juan.app.request.EditarUsuario;
@@ -21,7 +25,7 @@ public final UsuarioRepository usuarioRepository;
     }
 
     public Usuario obtenerInformacionUsuario(String email) {
-        return usuarioRepository.findByEmail(email).orElseThrow(()->new RuntimeException("No se ha encontrado el usuario"));
+        return usuarioRepository.findByEmail(email).orElseThrow(()->new UserNotFound("No se ha encontrado el usuario"));
     }
 
     @Override
@@ -31,29 +35,29 @@ public final UsuarioRepository usuarioRepository;
             usuarioParaRegistrar.setFechaRegistro(LocalDateTime.now());
             return usuarioRepository.save(usuarioParaRegistrar);
         }
-        throw new RuntimeException("El email ya existe en la base de datos");
+        throw new CreatedException("El email ya existe en la base de datos");
 
     }
 
     @Override
     public Usuario editarUsuario(String email,EditarUsuario usuario) {
 
-        Usuario usuarioParaEditar = usuarioRepository.findByEmail(email).orElseThrow(()-> new RuntimeException("Usuario no encontrado"));
+        Usuario usuarioParaEditar = obtenerInformacionUsuario(email);
         try {
             UsuarioConverter.editarUsuariotoUsuario(usuarioParaEditar, usuario);
             return usuarioRepository.save(usuarioParaEditar);
-        }catch (RuntimeException e) {
-            throw new RuntimeException("No se ha podido actualizar la informacion");
+        }catch (UpdatedException e) {
+            throw new UpdatedException("No se ha podido actualizar la informacion");
         }
     }
 
     @Override
     public void eliminarUsuario(String email) {
-        Usuario usuarioParaEliminar = usuarioRepository.findByEmail(email).orElseThrow(()->new RuntimeException("Usuario no encontrado"));
+        Usuario usuarioParaEliminar = obtenerInformacionUsuario(email);
         try{
             usuarioRepository.delete(usuarioParaEliminar);
-        }catch (RuntimeException e){
-            throw new RuntimeException("No se ha podido eliminar correctamente al usuario");
+        }catch (DeletedException e){
+            throw new DeletedException("No se ha podido eliminar correctamente al usuario");
         }
 
     }
