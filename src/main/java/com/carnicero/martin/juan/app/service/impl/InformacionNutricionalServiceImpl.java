@@ -1,5 +1,8 @@
 package com.carnicero.martin.juan.app.service.impl;
 
+import com.carnicero.martin.juan.app.exception.CreatedException;
+import com.carnicero.martin.juan.app.exception.DeletedException;
+import com.carnicero.martin.juan.app.exception.UpdatedException;
 import com.carnicero.martin.juan.app.model.InformacionNutricionalAlimento;
 import com.carnicero.martin.juan.app.repository.InformacionNutricionalRepository;
 import com.carnicero.martin.juan.app.request.EditarInformacionNutricional;
@@ -49,8 +52,8 @@ public class InformacionNutricionalServiceImpl implements InformacionNutricional
             }
             alimentoParaRegistrar.setCodigoAlimento(codigo);
             return informacionRepository.save(alimentoParaRegistrar);
-        }catch (RuntimeException e){
-            throw new RuntimeException(ERROR_REGISTRAR);
+        }catch (CreatedException e){
+            throw new CreatedException(ERROR_REGISTRAR);
         }
     }
 
@@ -60,8 +63,8 @@ public class InformacionNutricionalServiceImpl implements InformacionNutricional
         InformacionNutricionalAlimento alimentoParaEditar = obtenerInformacion(codigo);
         InformacionNutricionalConverter.editarInfomacionNutricionalToEntity(alimentoParaEditar,data);
         return informacionRepository.save(alimentoParaEditar);
-        }catch (RuntimeException e){
-            throw new RuntimeException(ERROR_EDITAR);
+        }catch (UpdatedException e){
+            throw new UpdatedException(ERROR_EDITAR);
         }
 
     }
@@ -71,8 +74,8 @@ public class InformacionNutricionalServiceImpl implements InformacionNutricional
         try{
         InformacionNutricionalAlimento alimentoParaEliminar = obtenerInformacion(codigo);
         informacionRepository.delete(alimentoParaEliminar);
-        }catch (RuntimeException e){
-            throw new RuntimeException(ERROR_ELIMINAR);
+        }catch (DeletedException e){
+            throw new DeletedException(ERROR_ELIMINAR);
         }
     }
 }

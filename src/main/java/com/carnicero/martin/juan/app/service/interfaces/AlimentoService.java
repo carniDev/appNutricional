@@ -13,6 +13,8 @@ public interface AlimentoService {
     Alimento registrarAlimento(RegistrarAlimento data);
     Alimento editarAlimento(Long id,EditarAlimento data);
     void eliminarAlimentos(List<Alimento> alimentos);
-
+    void eliminarAlimento(Long id);
     List<Alimento> listarAlimentos();
+
+
 }

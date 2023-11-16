@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface InformacionNutricionalService {
 
-    public InformacionNutricionalAlimento obtenerInformacion(String codigoAlimento);
-    public List<InformacionNutricionalAlimento>obtenerInformacion();
+    InformacionNutricionalAlimento obtenerInformacion(String codigoAlimento);
+    List<InformacionNutricionalAlimento>obtenerInformacion();
     List<?> obtenerInformacionByNombre(String nombre);
-    public InformacionNutricionalAlimento registrarAlimento(InformacionNutricional data);
-    public InformacionNutricionalAlimento editarAlimento(String codigo,EditarInformacionNutricional data);
+    InformacionNutricionalAlimento registrarAlimento(InformacionNutricional data);
+    InformacionNutricionalAlimento editarAlimento(String codigo,EditarInformacionNutricional data);
 
     void eliminarAlimento(String codigo);
 

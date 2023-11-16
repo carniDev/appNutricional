@@ -1,5 +1,6 @@
 package com.carnicero.martin.juan.app.controller;
 
+import com.carnicero.martin.juan.app.exception.CreatedException;
 import com.carnicero.martin.juan.app.service.interfaces.RecomendacionDiariaService;
 import com.carnicero.martin.juan.app.util.Constantes.Constantes;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ private final RecomendacionDiariaService recomendacionService;
     public ResponseEntity registrarInformacionDiaria(@RequestParam String email){
         try{
             return ResponseEntity.ok(recomendacionService.crearRecomendacionDiaria(email));
-        }catch (RuntimeException e){
+        }catch (CreatedException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }

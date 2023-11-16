@@ -1,5 +1,6 @@
 package com.carnicero.martin.juan.app.service.impl;
 
+import com.carnicero.martin.juan.app.exception.CreatedException;
 import com.carnicero.martin.juan.app.model.Alimento;
 import com.carnicero.martin.juan.app.model.Comida;
 import com.carnicero.martin.juan.app.model.RecomendacionDiaria;
@@ -45,13 +46,8 @@ public class RecomendacionDiariaServiceImpl implements RecomendacionDiariaServic
     }
 
     public InformacionDiariaResponse obtenerInformacion(String fechaDia, String email) {
-        Usuario usuario = usuarioService.obtenerInformacionUsuario(email);
         RecomendacionDiaria recomendacion = recomendacionRepository.findByFechaAndUsuarioEmail(stringToLocalDateConverter(fechaDia), email);
-        InformacionDiariaResponse diaria = new InformacionDiariaResponse();
-        diaria.setHidratosCarbono(recomendacion.getHidratosCarbonoDiarios());
-        diaria.setKcal(recomendacion.getKcalDiarias());
-        diaria.setGrasas(recomendacion.getGrasaDiaria());
-        diaria.setProteinas(recomendacion.getProteinaDiaria());
+        InformacionDiariaResponse diaria = asignarDatosInformacion(recomendacion);
         List<Comida> comidas = comidaRepository.findAllByFechaComidaAndUsuarioEmail(stringToLocalDateConverter(fechaDia),email);
         if(comidas.isEmpty()){
             diaria.setComidas(new ArrayList<>());
@@ -62,13 +58,23 @@ public class RecomendacionDiariaServiceImpl implements RecomendacionDiariaServic
         return diaria;
     }
 
-    public RecomendacionDiaria crearRecomendacionDiaria(Usuario usuario) {
-        return recomendacionRepository.save(new RecomendacionDiaria(usuario));
-    }
 
     public RecomendacionDiaria crearRecomendacionDiaria(String email) {
-        Usuario usuario = usuarioService.obtenerInformacionUsuario(email);
-        return recomendacionRepository.save(new RecomendacionDiaria(usuario));
+        try {
+            Usuario usuario = usuarioService.obtenerInformacionUsuario(email);
+            return recomendacionRepository.save(new RecomendacionDiaria(usuario));
+        }catch (CreatedException e){
+            throw new CreatedException("No se ha podido crear");
+        }
+    }
+
+    private InformacionDiariaResponse asignarDatosInformacion(RecomendacionDiaria recomendacion){
+        InformacionDiariaResponse diaria = new InformacionDiariaResponse();
+        diaria.setHidratosCarbono(recomendacion.getHidratosCarbonoDiarios());
+        diaria.setKcal(recomendacion.getKcalDiarias());
+        diaria.setGrasas(recomendacion.getGrasaDiaria());
+        diaria.setProteinas(recomendacion.getProteinaDiaria());
+        return diaria;
     }
 
 
