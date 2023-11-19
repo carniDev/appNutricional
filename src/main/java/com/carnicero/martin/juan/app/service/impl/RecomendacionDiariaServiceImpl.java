@@ -16,6 +16,7 @@ import com.carnicero.martin.juan.app.service.interfaces.ComidaService;
 import com.carnicero.martin.juan.app.service.interfaces.RecomendacionDiariaService;
 import com.carnicero.martin.juan.app.service.interfaces.UsuarioService;
 import com.carnicero.martin.juan.app.util.converter.LocalDateConverter;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -72,6 +73,18 @@ public class RecomendacionDiariaServiceImpl implements RecomendacionDiariaServic
         }
     }
 
+    @Override
+    public void actualizar(String email) {
+        LocalDate fecha = LocalDate.now();
+        actualizarMacronutrientes(fecha,email);
+    }
+
+    @Override
+    public void actualizar(String email, String fecha) {
+        LocalDate fechaConvertida = LocalDateConverter.stringToLocalDateConverter(fecha);
+        actualizarMacronutrientes(fechaConvertida,email);
+    }
+
     private InformacionDiariaResponse asignarDatosInformacion(RecomendacionDiaria recomendacion){
         InformacionDiariaResponse diaria = new InformacionDiariaResponse();
         diaria.setHidratosCarbono(recomendacion.getHidratosCarbonoDiarios());
@@ -79,6 +92,44 @@ public class RecomendacionDiariaServiceImpl implements RecomendacionDiariaServic
         diaria.setGrasas(recomendacion.getGrasaDiaria());
         diaria.setProteinas(recomendacion.getProteinaDiaria());
         return diaria;
+    }
+
+    private void actualizarMacronutrientes(LocalDate fechaDia, String email) {
+        RecomendacionDiaria recomendacionDiaria = recomendacionRepository.findByFechaAndUsuarioEmail(fechaDia,email);
+        List<Comida>comidas = comidaRepository.findAllByFechaComidaAndUsuarioEmail(fechaDia,email);
+        MacroNutritientesComida nutriente = calcular(comidas);
+        recomendacionDiaria.setHidratosCarbonoDiarios(nutriente.getHidratosCarbono());
+        recomendacionDiaria.setProteinaDiaria(nutriente.getProteinas());
+        recomendacionDiaria.setGrasaDiaria(nutriente.getGrasas());
+        recomendacionDiaria.setKcalDiarias(nutriente.getKcal());
+        recomendacionRepository.save(recomendacionDiaria);
+    }
+
+    private MacroNutritientesComida calcular(List<Comida> comidas) {
+        AtomicInteger hidratos = new AtomicInteger();
+        AtomicInteger proteinas = new AtomicInteger();
+        AtomicInteger grasas = new AtomicInteger();
+        comidas.forEach(comida -> {
+            comida.getListadoAlimentos().forEach(alimento -> {
+                double cantidad = alimento.getCantidadAlimento();
+                hidratos.addAndGet((int) (cantidad * alimento.getInformacion().getHidratosCarbono()) / 100);
+                proteinas.addAndGet((int) (cantidad * alimento.getInformacion().getProteinas()) / 100);
+                grasas.addAndGet((int) (cantidad * alimento.getInformacion().getGrasas()) / 100);
+            });
+        });
+
+        MacroNutritientesComida nutrientesComida = new MacroNutritientesComida();
+        nutrientesComida.setHidratosCarbono(hidratos.get());
+        nutrientesComida.setProteinas(proteinas.get());
+        nutrientesComida.setGrasas(grasas.get());
+        nutrientesComida.setKcal(calculoKcal(nutrientesComida));
+        return nutrientesComida;
+    }
+
+    private int calculoKcal(MacroNutritientesComida nutrientes) {
+        int kcal = 0;
+        kcal += (nutrientes.getHidratosCarbono() * 4) + (nutrientes.getProteinas() * 4) + (nutrientes.getGrasas() * 9);
+        return kcal;
     }
 
 

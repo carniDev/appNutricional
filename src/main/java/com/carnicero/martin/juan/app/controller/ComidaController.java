@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,6 +60,7 @@ public class ComidaController {
     public ResponseEntity registrarComida(@RequestBody RegistrarComida data) {
         try {
             Comida comidaRegistrada = comidaService.registrarComida(data);
+            recomendacionDiariaService.actualizar(data.getEmail());
             return ResponseEntity.ok(REGISTRAR_OK);
         } catch (CreatedException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -69,6 +71,7 @@ public class ComidaController {
     public ResponseEntity editarComida(@RequestBody EditarComidaRequest data) {
         try {
             Comida comidaEditada = comidaService.editarComida(data);
+            recomendacionDiariaService.actualizar(data.getEmail());
             return ResponseEntity.ok(comidaEditada);
         } catch (UpdatedException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -79,6 +82,7 @@ public class ComidaController {
     public ResponseEntity eliminarComida(@RequestParam final String fechaDia, @RequestParam final String email, @RequestParam TipoComida tipoComida) {
         try {
             comidaService.eliminarComida(fechaDia, email, tipoComida);
+            recomendacionDiariaService.actualizar(email);
             return ResponseEntity.ok(ELIMINAR_OK);
         } catch (DeletedException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
