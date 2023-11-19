@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class InformacionComidaConverter {
     public static InformacionComida comidaToInformacion(Comida data){
         InformacionComida informacionComida = new InformacionComida();
-        informacionComida.setEmail(data.getUsuario().getEmail());
+        informacionComida.setEmail(data.getUsuario().getUsername());
         informacionComida.setTipoComida(data.getTipoComida());
         informacionComida.setFechaComida(LocalDateConverter.localDateToString(data.getFechaComida()));
         informacionComida.setAlimentos(data.getListadoAlimentos());

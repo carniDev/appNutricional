@@ -25,13 +25,13 @@ private final RecomendacionDiariaService recomendacionService;
         try{
             return ResponseEntity.ok(recomendacionService.obtenerInformacion(fechaDia,email));
         }catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.getMessage());
         }
 
     }
 
     @PostMapping(REGISTRAR)
-    public ResponseEntity registrarInformacionDiaria(@RequestParam String email){
+    public ResponseEntity registrarInformacionDiaria(@RequestBody String email){
         try{
             return ResponseEntity.ok(recomendacionService.crearRecomendacionDiaria(email));
         }catch (CreatedException e){

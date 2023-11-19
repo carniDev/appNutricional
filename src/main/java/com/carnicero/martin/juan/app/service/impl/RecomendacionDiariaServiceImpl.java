@@ -47,6 +47,10 @@ public class RecomendacionDiariaServiceImpl implements RecomendacionDiariaServic
 
     public InformacionDiariaResponse obtenerInformacion(String fechaDia, String email) {
         RecomendacionDiaria recomendacion = recomendacionRepository.findByFechaAndUsuarioEmail(stringToLocalDateConverter(fechaDia), email);
+
+        if(recomendacion==null){
+            recomendacion=crearRecomendacionDiaria(email);
+        }
         InformacionDiariaResponse diaria = asignarDatosInformacion(recomendacion);
         List<Comida> comidas = comidaRepository.findAllByFechaComidaAndUsuarioEmail(stringToLocalDateConverter(fechaDia),email);
         if(comidas.isEmpty()){

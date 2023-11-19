@@ -50,6 +50,8 @@ public class ComidaServiceImpl implements ComidaService {
         if (!comidaRepository.existsByFechaComidaAndUsuarioEmailAndTipoComida(LocalDateConverter.stringToLocalDateConverter(data.getFechaComida()), data.getEmail(), data.getTipoComida())) {
             Usuario usuario = usuarioService.obtenerInformacionUsuario(data.getEmail());
             Comida comidaParaRegistrar = registrarComidaToEntity(data,usuario);
+            List<Comida>comidas = comidaRepository.findAllByFechaComidaAndUsuarioEmail(LocalDateConverter.stringToLocalDateConverter(data.getFechaComida()),data.getEmail());
+            comidas.add(comidaParaRegistrar);
             actualizarMacronutrientes(data.getFechaComida(),data.getEmail());
             return comidaRepository.save(comidaParaRegistrar);
         }
