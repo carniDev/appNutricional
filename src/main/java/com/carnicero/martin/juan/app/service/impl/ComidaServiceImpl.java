@@ -11,8 +11,10 @@ import com.carnicero.martin.juan.app.repository.ComidaRepository;
 import com.carnicero.martin.juan.app.repository.RecomendacionDiariaRepository;
 import com.carnicero.martin.juan.app.request.EditarComidaRequest;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
+import com.carnicero.martin.juan.app.response.MacroNutritientesComida;
 import com.carnicero.martin.juan.app.service.interfaces.ComidaService;
 import com.carnicero.martin.juan.app.service.interfaces.UsuarioService;
+import com.carnicero.martin.juan.app.util.calcular.CalculoNutrientes;
 import com.carnicero.martin.juan.app.util.converter.LocalDateConverter;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +56,11 @@ public class ComidaServiceImpl implements ComidaService {
             Comida comidaParaRegistrar = registrarComidaToEntity(data,usuario);
             List<Comida>comidas = comidaRepository.findAllByFechaComidaAndUsuarioEmail(LocalDateConverter.stringToLocalDateConverter(data.getFechaComida()),data.getEmail());
             comidas.add(comidaParaRegistrar);
+            MacroNutritientesComida macros = CalculoNutrientes.calcular(comidaParaRegistrar);
+            comidaParaRegistrar.setKcal(macros.getKcal());
+            comidaParaRegistrar.setHidratosCarbono(macros.getHidratosCarbono());
+            comidaParaRegistrar.setProteinas(macros.getProteinas());
+            comidaParaRegistrar.setGrasas(macros.getGrasas());
             return comidaRepository.save(comidaParaRegistrar);
         }
         throw new CreatedException(ERROR_REGISTRAR);
@@ -73,6 +80,11 @@ public class ComidaServiceImpl implements ComidaService {
                             alimento.setInformacion(alimentoParaEditar.getInformacion());
                         }
                     });
+            MacroNutritientesComida macros = CalculoNutrientes.calcular(comidaUsuario);
+            comidaUsuario.setKcal(macros.getKcal());
+            comidaUsuario.setHidratosCarbono(macros.getHidratosCarbono());
+            comidaUsuario.setProteinas(macros.getProteinas());
+            comidaUsuario.setGrasas(macros.getGrasas());
 
             return comidaRepository.save(comidaUsuario);
         }catch (UpdatedException e){
