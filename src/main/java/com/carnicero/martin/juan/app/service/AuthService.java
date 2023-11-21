@@ -31,6 +31,7 @@ public class AuthService {
         UserDetails user = usuarioRepository.findByEmail(request.getEmail()).orElseThrow();
         String token = jwtService.getToken(user);
         return AuthResponse.builder()
+                .email(request.getEmail())
                 .token(token)
                 .build();
 
