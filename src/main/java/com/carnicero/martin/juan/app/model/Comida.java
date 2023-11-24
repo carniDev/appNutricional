@@ -1,8 +1,6 @@
 package com.carnicero.martin.juan.app.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +24,14 @@ public class Comida {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @Column(name = "fecha_comida")
     private LocalDate fechaComida;
+    @Column(name = "kcal")
+    private int kcal;
+    @Column(name = "hidratos_carbono")
+    private int hidratosCarbono;
+    @Column(name = "proteinas")
+    private int proteinas;
+    @Column(name = "grasas")
+    private int grasas;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Alimento> listadoAlimentos;
     @JsonIgnore

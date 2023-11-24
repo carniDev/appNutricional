@@ -1,20 +1,17 @@
 package com.carnicero.martin.juan.app.controller;
 
-import com.carnicero.martin.juan.app.exception.CreatedException;
 import com.carnicero.martin.juan.app.exception.DeletedException;
 import com.carnicero.martin.juan.app.exception.UpdatedException;
 import com.carnicero.martin.juan.app.exception.UserNotFound;
 import com.carnicero.martin.juan.app.model.Usuario;
 import com.carnicero.martin.juan.app.request.EditarUsuario;
-import com.carnicero.martin.juan.app.request.RegistrarUsuario;
 import com.carnicero.martin.juan.app.service.interfaces.UsuarioService;
-import com.carnicero.martin.juan.app.util.Constantes.Constantes;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
 
@@ -28,36 +25,31 @@ public class UsuarioController {
     }
 
     @GetMapping(INFORMACION)
-    public ResponseEntity informacionUsuario(@RequestParam String email){
+    public ResponseEntity informacionUsuario(){
         try {
-            Usuario usuarioObtenido = usuarioService.obtenerInformacionUsuario(email);
-            return ResponseEntity.ok(usuarioObtenido);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if(authentication!=null && authentication.isAuthenticated()){
+                Usuario usuario = (Usuario)authentication.getPrincipal();
+                return ResponseEntity.ok(usuario);
+            }
+           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }catch (UserNotFound e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
-    @GetMapping("/ultimo-loging")
-    public LocalDateTime ultimaVezLogueado(@RequestParam String email) {
 
-        return usuarioService.ultimaVezLogueadoUsuario(email);
-    }
-
-    @PostMapping(REGISTRAR)
-    public ResponseEntity registrarUsuario(@Valid @RequestBody RegistrarUsuario usuario){
-        try{
-            Usuario usuarioRegistrado = usuarioService.registrarUsuario(usuario);
-            return ResponseEntity.ok(REGISTRAR_OK);
-        }catch (CreatedException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
 
     @PutMapping(EDITAR)
-    public ResponseEntity editarUsuario(@RequestParam String email,@Valid @RequestBody EditarUsuario usuario){
+    public ResponseEntity editarUsuario(@Valid @RequestBody EditarUsuario usuarioEditado){
         try {
-            Usuario usuarioEditado = usuarioService.editarUsuario(email,usuario);
-            return ResponseEntity.ok(EDITAR_OK);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if(authentication!=null && authentication.isAuthenticated()) {
+                Usuario usuario =(Usuario) authentication.getPrincipal();
+                Usuario usuarioParaEditar = usuarioService.editarUsuario(usuario, usuarioEditado);
+                return ResponseEntity.ok(EDITAR_OK);
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }catch (UpdatedException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -65,10 +57,15 @@ public class UsuarioController {
     }
 
     @DeleteMapping(ELIMINAR)
-    public ResponseEntity eliminarUsuario(@RequestParam String email){
+    public ResponseEntity eliminarUsuario(){
         try {
-            usuarioService.eliminarUsuario(email);
-            return ResponseEntity.ok(ELIMINAR_OK);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if(authentication!=null && authentication.isAuthenticated()) {
+                Usuario usuario =(Usuario) authentication.getPrincipal();
+                usuarioService.eliminarUsuario(usuario);
+                return ResponseEntity.ok(ELIMINAR_OK);
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }catch (DeletedException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

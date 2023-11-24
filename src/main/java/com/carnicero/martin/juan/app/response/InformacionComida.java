@@ -4,9 +4,7 @@ import com.carnicero.martin.juan.app.model.Alimento;
 import com.carnicero.martin.juan.app.model.TipoComida;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -14,7 +12,6 @@ import java.util.List;
 public class InformacionComida {
     private TipoComida tipoComida;
     private String fechaComida;
-    private String email;
     private int kcal;
     private int hidratosCarbono;
     private int proteinas;
