@@ -5,6 +5,7 @@ import com.carnicero.martin.juan.app.exception.DeletedException;
 import com.carnicero.martin.juan.app.exception.UpdatedException;
 import com.carnicero.martin.juan.app.model.Comida;
 import com.carnicero.martin.juan.app.model.TipoComida;
+import com.carnicero.martin.juan.app.model.Usuario;
 import com.carnicero.martin.juan.app.request.EditarComidaRequest;
 import com.carnicero.martin.juan.app.request.RegistrarComida;
 import com.carnicero.martin.juan.app.response.InformacionComida;
@@ -14,9 +15,10 @@ import com.carnicero.martin.juan.app.service.interfaces.RecomendacionDiariaServi
 import com.carnicero.martin.juan.app.util.converter.InformacionComidaConverter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,20 +50,32 @@ public class ComidaController {
 
 
     @GetMapping(LISTAR)
-    public ResponseEntity listarComidasUsuarioDia(@RequestParam String fecha, @RequestParam String email) {
-        List<InformacionComida> informacion = comidaService.listarComidasUsuarioFecha(email, fecha)
-                .stream()
-                .map(InformacionComidaConverter::comidaToInformacion).
-                collect(Collectors.toList());
-        return ResponseEntity.ok(informacion.isEmpty() ? SIN_INFORMACION : informacion);
+    public ResponseEntity listarComidasUsuarioDia(@RequestParam String fecha) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Usuario principal = (Usuario) authentication.getPrincipal();
+
+            List<InformacionComida> informacion = comidaService.listarComidasUsuarioFecha(principal.getEmail(), fecha)
+                    .stream()
+                    .map(InformacionComidaConverter::comidaToInformacion).
+                    collect(Collectors.toList());
+            return ResponseEntity.ok(informacion.isEmpty() ? SIN_INFORMACION : informacion);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @PostMapping(REGISTRAR)
     public ResponseEntity registrarComida(@RequestBody RegistrarComida data) {
         try {
-            Comida comidaRegistrada = comidaService.registrarComida(data);
-            recomendacionDiariaService.actualizar(data.getEmail());
-            return ResponseEntity.ok(REGISTRAR_OK);
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.isAuthenticated()) {
+                Usuario principal = (Usuario) authentication.getPrincipal();
+                Comida comidaRegistrada = comidaService.registrarComida(data, principal);
+                recomendacionDiariaService.actualizar(principal.getEmail());
+                return ResponseEntity.ok(REGISTRAR_OK);
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (CreatedException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -70,20 +84,31 @@ public class ComidaController {
     @PutMapping(EDITAR)
     public ResponseEntity editarComida(@RequestBody EditarComidaRequest data) {
         try {
-            Comida comidaEditada = comidaService.editarComida(data);
-            recomendacionDiariaService.actualizar(data.getEmail());
-            return ResponseEntity.ok(comidaEditada);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.isAuthenticated()) {
+                Usuario principal = (Usuario) authentication.getPrincipal();
+                Comida comidaEditada = comidaService.editarComida(data, principal);
+                recomendacionDiariaService.actualizar(principal.getEmail());
+                return ResponseEntity.ok(comidaEditada);
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
         } catch (UpdatedException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     @DeleteMapping(ELIMINAR)
-    public ResponseEntity eliminarComida(@RequestParam final String fechaDia, @RequestParam final String email, @RequestParam TipoComida tipoComida) {
+    public ResponseEntity eliminarComida(@RequestParam final String fechaDia, @RequestParam TipoComida tipoComida) {
         try {
-            comidaService.eliminarComida(fechaDia, email, tipoComida);
-            recomendacionDiariaService.actualizar(email);
-            return ResponseEntity.ok(ELIMINAR_OK);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.isAuthenticated()) {
+                Usuario principal = (Usuario) authentication.getPrincipal();
+                comidaService.eliminarComida(fechaDia, principal.getEmail(), tipoComida);
+                recomendacionDiariaService.actualizar(principal.getEmail());
+                return ResponseEntity.ok(ELIMINAR_OK);
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } catch (DeletedException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

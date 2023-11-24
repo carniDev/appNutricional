@@ -31,7 +31,6 @@ public class AuthService {
         UserDetails user = usuarioRepository.findByEmail(request.getEmail()).orElseThrow();
         String token = jwtService.getToken(user);
         return AuthResponse.builder()
-                .email(request.getEmail())
                 .token(token)
                 .build();
 
@@ -39,6 +38,7 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request) {
         Usuario user = Usuario.builder()
+                .nombre(request.getNombre())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .fechaNacimiento(LocalDateConverter.stringToLocalDateConverter(request.getFechaNacimiento()))

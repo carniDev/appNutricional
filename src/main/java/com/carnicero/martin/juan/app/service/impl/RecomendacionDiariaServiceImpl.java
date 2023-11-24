@@ -38,14 +38,14 @@ public class RecomendacionDiariaServiceImpl implements RecomendacionDiariaServic
         return recomendacionRepository.findByFechaAndUsuarioEmail(stringToLocalDateConverter(fechaDia), email);
     }
 
-    public InformacionDiariaResponse obtenerInformacion(String fechaDia, String email) {
-        RecomendacionDiaria recomendacion = recomendacionRepository.findByFechaAndUsuarioEmail(stringToLocalDateConverter(fechaDia), email);
+    public InformacionDiariaResponse obtenerInformacion(String fechaDia,Usuario usuario) {
+        RecomendacionDiaria recomendacion = recomendacionRepository.findByFechaAndUsuarioEmail(stringToLocalDateConverter(fechaDia), usuario.getEmail());
 
         if(recomendacion==null){
-            recomendacion=crearRecomendacionDiaria(email);
+            recomendacion=crearRecomendacionDiaria(usuario);
         }
         InformacionDiariaResponse diaria = asignarDatosInformacion(recomendacion);
-        List<Comida> comidas = comidaRepository.findAllByFechaComidaAndUsuarioEmail(stringToLocalDateConverter(fechaDia),email);
+        List<Comida> comidas = comidaRepository.findAllByFechaComidaAndUsuarioEmail(stringToLocalDateConverter(fechaDia),usuario.getEmail());
         if(comidas.isEmpty()){
             diaria.setComidas(new ArrayList<>());
         }else{
@@ -56,9 +56,8 @@ public class RecomendacionDiariaServiceImpl implements RecomendacionDiariaServic
     }
 
 
-    public RecomendacionDiaria crearRecomendacionDiaria(String email) {
+    public RecomendacionDiaria crearRecomendacionDiaria(Usuario usuario) {
         try {
-            Usuario usuario = usuarioService.obtenerInformacionUsuario(email);
             return recomendacionRepository.save(new RecomendacionDiaria(usuario));
         }catch (CreatedException e){
             throw new CreatedException("No se ha podido crear");

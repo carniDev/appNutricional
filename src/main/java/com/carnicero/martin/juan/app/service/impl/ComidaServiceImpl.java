@@ -50,11 +50,10 @@ public class ComidaServiceImpl implements ComidaService {
     }
 
     @Override
-    public Comida registrarComida(RegistrarComida data) {
-        if (!comidaRepository.existsByFechaComidaAndUsuarioEmailAndTipoComida(LocalDateConverter.stringToLocalDateConverter(data.getFechaComida()), data.getEmail(), data.getTipoComida())) {
-            Usuario usuario = usuarioService.obtenerInformacionUsuario(data.getEmail());
+    public Comida registrarComida(RegistrarComida data,Usuario usuario) {
+        if (!comidaRepository.existsByFechaComidaAndUsuarioEmailAndTipoComida(LocalDateConverter.stringToLocalDateConverter(data.getFechaComida()), usuario.getEmail(), data.getTipoComida())) {
             Comida comidaParaRegistrar = registrarComidaToEntity(data,usuario);
-            List<Comida>comidas = comidaRepository.findAllByFechaComidaAndUsuarioEmail(LocalDateConverter.stringToLocalDateConverter(data.getFechaComida()),data.getEmail());
+            List<Comida>comidas = comidaRepository.findAllByFechaComidaAndUsuarioEmail(LocalDateConverter.stringToLocalDateConverter(data.getFechaComida()),usuario.getEmail());
             comidas.add(comidaParaRegistrar);
             MacroNutritientesComida macros = CalculoNutrientes.calcular(comidaParaRegistrar);
             comidaParaRegistrar.setKcal(macros.getKcal());
@@ -67,9 +66,9 @@ public class ComidaServiceImpl implements ComidaService {
     }
 
     @Override
-    public Comida editarComida(EditarComidaRequest data) {
+    public Comida editarComida(EditarComidaRequest data, Usuario usuario) {
         try {
-            Comida comidaUsuario = listarUnaComidaUsuarioFecha(data.getEmail(), data.getFechaComida(), data.getTipoComida());
+            Comida comidaUsuario = listarUnaComidaUsuarioFecha(usuario.getEmail(), data.getFechaComida(), data.getTipoComida());
            Map<Long,Alimento>alimentos = data.getListadoAlimentos().stream().collect(Collectors.toMap(Alimento::getIdAlimento,food ->food));
             comidaUsuario.getListadoAlimentos().stream()
                     .filter(alimento -> alimentos.containsKey(alimento.getIdAlimento()))
