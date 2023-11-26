@@ -7,6 +7,7 @@ import com.carnicero.martin.juan.app.model.Alimento;
 import com.carnicero.martin.juan.app.request.EditarAlimento;
 import com.carnicero.martin.juan.app.request.RegistrarAlimento;
 import com.carnicero.martin.juan.app.service.interfaces.AlimentoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +19,10 @@ import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
 
 @RestController
 @RequestMapping(ALIMENTO_CONTROLLER+"/"+ALIMENTO_CONTROLLER)
+@RequiredArgsConstructor
 public class AlimentoController {
 
     private final AlimentoService alimentoService;
-
-    public AlimentoController(AlimentoService alimentoService) {
-        this.alimentoService = alimentoService;
-    }
 
     @GetMapping(LISTAR)
     public ResponseEntity listarAlimentos() {

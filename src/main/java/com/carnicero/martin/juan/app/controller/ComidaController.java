@@ -13,6 +13,7 @@ import com.carnicero.martin.juan.app.response.InformacionComidaUsuario;
 import com.carnicero.martin.juan.app.service.interfaces.ComidaService;
 import com.carnicero.martin.juan.app.service.interfaces.RecomendacionDiariaService;
 import com.carnicero.martin.juan.app.util.converter.InformacionComidaConverter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -27,15 +28,13 @@ import static com.carnicero.martin.juan.app.util.converter.InformacionComidaConv
 
 @RestController
 @RequestMapping(NOMBRE_APP + "/" + COMIDA_CONTROLLER)
+@RequiredArgsConstructor
 public class ComidaController {
 
     private final ComidaService comidaService;
     private final RecomendacionDiariaService recomendacionDiariaService;
 
-    public ComidaController(ComidaService comidaService, RecomendacionDiariaService recomendacionDiariaService) {
-        this.comidaService = comidaService;
-        this.recomendacionDiariaService = recomendacionDiariaService;
-    }
+
 
     @GetMapping(BUSCAR)
     public ResponseEntity listarUnaComidaUsuarioDia(@RequestParam String fecha, @RequestParam String email, @RequestParam TipoComida tipoComida) {

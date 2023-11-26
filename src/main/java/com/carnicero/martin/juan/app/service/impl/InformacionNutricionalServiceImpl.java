@@ -9,6 +9,7 @@ import com.carnicero.martin.juan.app.request.EditarInformacionNutricional;
 import com.carnicero.martin.juan.app.request.InformacionNutricional;
 import com.carnicero.martin.juan.app.service.interfaces.InformacionNutricionalService;
 import com.carnicero.martin.juan.app.util.converter.InformacionNutricionalConverter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,13 +20,12 @@ import static com.carnicero.martin.juan.app.util.generador.GeneradorCodigo.compr
 import static com.carnicero.martin.juan.app.util.generador.GeneradorCodigo.generarCodigoUnico;
 
 @Service
+@RequiredArgsConstructor
 public class InformacionNutricionalServiceImpl implements InformacionNutricionalService {
 
     private final InformacionNutricionalRepository informacionRepository;
 
-    public InformacionNutricionalServiceImpl(InformacionNutricionalRepository informacionRepository) {
-        this.informacionRepository = informacionRepository;
-    }
+
 
     @Override
     public InformacionNutricionalAlimento obtenerInformacion(String codigoAlimento) {

@@ -16,6 +16,7 @@ import com.carnicero.martin.juan.app.service.interfaces.ComidaService;
 import com.carnicero.martin.juan.app.service.interfaces.UsuarioService;
 import com.carnicero.martin.juan.app.util.calcular.CalculoNutrientes;
 import com.carnicero.martin.juan.app.util.converter.LocalDateConverter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,18 +28,12 @@ import static com.carnicero.martin.juan.app.util.converter.ComidaConverter.regis
 import static com.carnicero.martin.juan.app.util.converter.LocalDateConverter.stringToLocalDateConverter;
 
 @Service
+@RequiredArgsConstructor
 public class ComidaServiceImpl implements ComidaService {
 
     private final ComidaRepository comidaRepository;
-    private final UsuarioService usuarioService;
 
-    private final RecomendacionDiariaRepository recomendacionDiariaRepository;
 
-    public ComidaServiceImpl(ComidaRepository comidaRepository, UsuarioService usuarioService, RecomendacionDiariaRepository recomendacionDiariaRepository) {
-        this.comidaRepository = comidaRepository;
-        this.usuarioService = usuarioService;
-        this.recomendacionDiariaRepository = recomendacionDiariaRepository;
-    }
 
     @Override
     public List<Comida> listarComidasUsuarioFecha(String email, String fecha) {
