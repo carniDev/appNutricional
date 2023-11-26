@@ -6,6 +6,7 @@ import com.carnicero.martin.juan.app.request.EditarInformacionNutricional;
 import com.carnicero.martin.juan.app.request.InformacionNutricional;
 import com.carnicero.martin.juan.app.service.interfaces.InformacionNutricionalService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +17,10 @@ import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
 
 @RestController
 @RequestMapping(NOMBRE_APP+"/"+INFORMACION_NUTRICIONAL)
+@RequiredArgsConstructor
 public class InformacionNutricionalController {
 private final InformacionNutricionalService informacionService;
 
-    public InformacionNutricionalController(InformacionNutricionalService informacionService) {
-        this.informacionService = informacionService;
-    }
 
     @GetMapping(LISTAR)
     public ResponseEntity listarAlimentos(){

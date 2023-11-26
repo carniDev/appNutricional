@@ -11,6 +11,7 @@ import com.carnicero.martin.juan.app.response.MacroNutritientesComida;
 import com.carnicero.martin.juan.app.service.interfaces.RecomendacionDiariaService;
 import com.carnicero.martin.juan.app.service.interfaces.UsuarioService;
 import com.carnicero.martin.juan.app.util.converter.LocalDateConverter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,18 +22,13 @@ import static com.carnicero.martin.juan.app.util.calcular.CalculoNutrientes.calc
 import static com.carnicero.martin.juan.app.util.converter.LocalDateConverter.stringToLocalDateConverter;
 
 @Service
+@RequiredArgsConstructor
 public class RecomendacionDiariaServiceImpl implements RecomendacionDiariaService {
 
     private final RecomendacionDiariaRepository recomendacionRepository;
     private final UsuarioService usuarioService;
     private final ComidaRepository comidaRepository;
 
-    public RecomendacionDiariaServiceImpl(RecomendacionDiariaRepository recomendacionRepository, UsuarioService usuarioService,
-                                          ComidaRepository comidaRepository) {
-        this.recomendacionRepository = recomendacionRepository;
-        this.usuarioService = usuarioService;
-        this.comidaRepository = comidaRepository;
-    }
 
     private RecomendacionDiaria obtener(String fechaDia, String email) {
         return recomendacionRepository.findByFechaAndUsuarioEmail(stringToLocalDateConverter(fechaDia), email);

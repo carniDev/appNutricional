@@ -7,26 +7,22 @@ import com.carnicero.martin.juan.app.repository.UsuarioRepository;
 import com.carnicero.martin.juan.app.request.EditarUsuario;
 import com.carnicero.martin.juan.app.service.interfaces.UsuarioService;
 import com.carnicero.martin.juan.app.util.converter.UsuarioConverter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioServiceImpl implements UsuarioService {
 
-public final UsuarioRepository usuarioRepository;
-
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
-
-
+    public final UsuarioRepository usuarioRepository;
 
     @Override
-    public Usuario editarUsuario(Usuario usuarioParaEditar,EditarUsuario usuarioEditado) {
+    public Usuario editarUsuario(Usuario usuarioParaEditar, EditarUsuario usuarioEditado) {
 
         try {
             UsuarioConverter.editarUsuariotoUsuario(usuarioParaEditar, usuarioEditado);
             return usuarioRepository.save(usuarioParaEditar);
-        }catch (UpdatedException e) {
+        } catch (UpdatedException e) {
             throw new UpdatedException("No se ha podido actualizar la informacion");
         }
     }
@@ -34,14 +30,13 @@ public final UsuarioRepository usuarioRepository;
     @Override
     public void eliminarUsuario(Usuario usuario) {
 
-        try{
+        try {
             usuarioRepository.delete(usuario);
-        }catch (DeletedException e){
+        } catch (DeletedException e) {
             throw new DeletedException("No se ha podido eliminar correctamente al usuario");
         }
 
     }
-
 
 
 }

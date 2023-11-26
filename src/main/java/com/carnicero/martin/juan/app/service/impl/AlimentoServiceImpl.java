@@ -10,19 +10,17 @@ import com.carnicero.martin.juan.app.request.RegistrarAlimento;
 import com.carnicero.martin.juan.app.service.interfaces.AlimentoService;
 import com.carnicero.martin.juan.app.service.interfaces.InformacionNutricionalService;
 import com.carnicero.martin.juan.app.util.converter.AlimentoConverter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AlimentoServiceImpl implements AlimentoService {
     private final AlimentoRepository alimentoRepository;
     private final InformacionNutricionalService informacionService;
 
-    public AlimentoServiceImpl(AlimentoRepository alimentoRepository, InformacionNutricionalService informacionService) {
-        this.alimentoRepository = alimentoRepository;
-        this.informacionService = informacionService;
-    }
 
     @Override
     public Alimento buscarAlimento(Long id) {

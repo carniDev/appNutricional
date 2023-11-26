@@ -7,6 +7,7 @@ import com.carnicero.martin.juan.app.model.Usuario;
 import com.carnicero.martin.juan.app.request.EditarUsuario;
 import com.carnicero.martin.juan.app.service.interfaces.UsuarioService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,12 +18,10 @@ import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
 
 @RestController
 @RequestMapping(NOMBRE_APP+"/"+USUARIO_CONTROLLER)
+@RequiredArgsConstructor
 public class UsuarioController {
     public UsuarioService usuarioService;
 
-    public UsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
 
     @GetMapping(INFORMACION)
     public ResponseEntity informacionUsuario(){
