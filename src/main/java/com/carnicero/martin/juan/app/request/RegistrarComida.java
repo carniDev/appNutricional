@@ -11,10 +11,9 @@ import java.util.List;
 @Getter
 @Setter
 public class RegistrarComida {
-
+    
     private TipoComida tipoComida;
     private List<Alimento> listadoAlimentos;
-    private String email;
     private String fechaComida;
 
 }
