@@ -9,6 +9,7 @@ import com.carnicero.martin.juan.app.request.RegisterRequest;
 import com.carnicero.martin.juan.app.response.AuthResponse;
 import com.carnicero.martin.juan.app.util.converter.LocalDateConverter;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.patterns.IToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -56,4 +57,8 @@ public class AuthService {
     }
 
 
+    public Boolean comprobarToken(String token, Usuario usuario) {
+
+        return jwtService.isTokenValid(token,usuario);
+    }
 }
