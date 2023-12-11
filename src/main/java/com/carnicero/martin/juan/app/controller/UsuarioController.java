@@ -20,7 +20,7 @@ import static com.carnicero.martin.juan.app.util.Constantes.Constantes.*;
 @RequestMapping(NOMBRE_APP+"/"+USUARIO_CONTROLLER)
 @RequiredArgsConstructor
 public class UsuarioController {
-    public UsuarioService usuarioService;
+    private final  UsuarioService usuarioService;
 
 
     @GetMapping(INFORMACION)

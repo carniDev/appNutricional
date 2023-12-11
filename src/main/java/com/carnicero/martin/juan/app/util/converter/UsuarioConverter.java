@@ -5,7 +5,10 @@ import com.carnicero.martin.juan.app.request.EditarUsuario;
 
 public class UsuarioConverter {
 
-    public static void editarUsuariotoUsuario(Usuario usuario, EditarUsuario usuarioParaEditar){
+    public static void editarUsuariotoUsuario(Usuario usuario, EditarUsuario usuarioParaEditar) {
         usuario.setNombre(usuarioParaEditar.getNombre());
+        usuario.setEmail(usuarioParaEditar.getEmail());
+        usuario.setPassword(usuarioParaEditar.getPassword());
+        usuario.setFechaNacimiento(usuarioParaEditar.getFechaNacimiento());
     }
 }
