@@ -1,6 +1,7 @@
 package com.carnicero.martin.juan.app.service;
 
 
+import com.carnicero.martin.juan.app.model.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -31,7 +32,7 @@ public class JwtService {
             .setClaims(extraClaims)
             .setSubject(user.getUsername())
             .setIssuedAt(new Date(System.currentTimeMillis()))
-            .setExpiration(new Date(System.currentTimeMillis()+5000*60*24))
+            .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
             .signWith(getKey(), SignatureAlgorithm.HS256)
             .compact();
     }
@@ -48,6 +49,10 @@ public class JwtService {
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username=getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername())&& !isTokenExpired(token));
+    }
+    public boolean isTokenValid(String token, Usuario usuario) {
+        final String username=getUsernameFromToken(token);
+        return (username.equals(usuario.getUsername())&& !isTokenExpired(token));
     }
 
 
